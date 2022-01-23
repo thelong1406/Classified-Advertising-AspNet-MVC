@@ -1,0 +1,34 @@
+﻿@using WebRaoVat.Models;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    LoaPhatThanhEntities db = new LoaPhatThanhEntities();
+    int countUser = db.Users.AsNoTracking().Count();
+    int countPost = db.Posts.AsNoTracking().Where(p=>p.is_approved == true).Count();
+    int countDeal = db.Dealeds.AsNoTracking().Count();
+}
+
+<h2 class="title-page" style="text-align: center;">Dashboard</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4" >
+            <div class="sumary-div" style="background-color: #fa4659">
+                <h2>Total <br /> User</h2>
+                <p>@countUser</p>
+            </div>
+        </div>
+        <div class="col-md-4" >
+            <div class="sumary-div" style="background-color: #ffe362">
+                <h2>Total <br />Post</h2>
+                <p>@countPost</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="sumary-div" style="background-color: #FEA680">
+                <h2>Total <br />Dealed</h2>
+                <p>@countDeal</p>
+            </div>
+        </div>
+    </div>
+</div>
+

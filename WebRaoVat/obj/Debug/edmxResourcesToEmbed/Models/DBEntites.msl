@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="LoaPhatThanhModelStoreContainer" CdmEntityContainer="LoaPhatThanhEntities">
+    <EntitySetMapping Name="Ads">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.Ad">
+        <MappingFragment StoreEntitySet="Ad">
+          <ScalarProperty Name="ad_id" ColumnName="ad_id" />
+          <ScalarProperty Name="post_id" ColumnName="post_id" />
+          <ScalarProperty Name="time_start" ColumnName="time_start" />
+          <ScalarProperty Name="time_end" ColumnName="time_end" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Atributes">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.Atribute">
+        <MappingFragment StoreEntitySet="Atribute">
+          <ScalarProperty Name="atribute_id" ColumnName="atribute_id" />
+          <ScalarProperty Name="atribute_name" ColumnName="atribute_name" />
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Brands">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.Brand">
+        <MappingFragment StoreEntitySet="Brand">
+          <ScalarProperty Name="brand_id" ColumnName="brand_id" />
+          <ScalarProperty Name="brand1" ColumnName="brand" />
+          <ScalarProperty Name="logo" ColumnName="logo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BrandSelects">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.BrandSelect">
+        <MappingFragment StoreEntitySet="BrandSelect">
+          <ScalarProperty Name="brand_id" ColumnName="brand_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="seccond_cate_id" ColumnName="seccond_cate_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.Category">
+        <MappingFragment StoreEntitySet="Category">
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="category1" ColumnName="category" />
+          <ScalarProperty Name="image" ColumnName="image" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Districts">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.District">
+        <MappingFragment StoreEntitySet="District">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Images">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.Image">
+        <MappingFragment StoreEntitySet="Image">
+          <ScalarProperty Name="image_id" ColumnName="image_id" />
+          <ScalarProperty Name="post_id" ColumnName="post_id" />
+          <ScalarProperty Name="link" ColumnName="link" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Notifications">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.Notification">
+        <MappingFragment StoreEntitySet="Notification">
+          <ScalarProperty Name="notification_id" ColumnName="notification_id" />
+          <ScalarProperty Name="post_id" ColumnName="post_id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="time" ColumnName="time" />
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="another_user" ColumnName="another_user" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Permissions">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.Permission">
+        <MappingFragment StoreEntitySet="Permission">
+          <ScalarProperty Name="permission_id" ColumnName="permission_id" />
+          <ScalarProperty Name="permission1" ColumnName="permission" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Posts">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.Post">
+        <MappingFragment StoreEntitySet="Post">
+          <ScalarProperty Name="post_id" ColumnName="post_id" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="content" ColumnName="content" />
+          <ScalarProperty Name="date_posted" ColumnName="date_posted" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="price" ColumnName="price" />
+          <ScalarProperty Name="is_hided" ColumnName="is_hided" />
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="is_approved" ColumnName="is_approved" />
+          <ScalarProperty Name="is_seller" ColumnName="is_seller" />
+          <ScalarProperty Name="ward_id" ColumnName="ward_id" />
+          <ScalarProperty Name="product_id" ColumnName="product_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Products">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.Product">
+        <MappingFragment StoreEntitySet="Product">
+          <ScalarProperty Name="product_id" ColumnName="product_id" />
+          <ScalarProperty Name="product1" ColumnName="product" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Provinces">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.Province">
+        <MappingFragment StoreEntitySet="Province">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SeccondCategories">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.SeccondCategory">
+        <MappingFragment StoreEntitySet="SeccondCategory">
+          <ScalarProperty Name="seccond_cate_id" ColumnName="seccond_cate_id" />
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="seccond_cate" ColumnName="seccond_cate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ThirdCategories">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.ThirdCategory">
+        <MappingFragment StoreEntitySet="ThirdCategory">
+          <ScalarProperty Name="third_cate_id" ColumnName="third_cate_id" />
+          <ScalarProperty Name="third_cate" ColumnName="third_cate" />
+          <ScalarProperty Name="seccond_cate_id_1" ColumnName="seccond_cate_id_1" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="image" ColumnName="image" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="rate" ColumnName="rate" />
+          <ScalarProperty Name="rate_count" ColumnName="rate_count" />
+          <ScalarProperty Name="date_join" ColumnName="date_join" />
+          <ScalarProperty Name="permission_id" ColumnName="permission_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Wards">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.Ward">
+        <MappingFragment StoreEntitySet="Ward">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="DistrictID" ColumnName="DistrictID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AbtributeAndValues">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.AbtributeAndValue">
+        <MappingFragment StoreEntitySet="AbtributeAndValue">
+          <ScalarProperty Name="atribute_id" ColumnName="atribute_id" />
+          <ScalarProperty Name="post_id" ColumnName="post_id" />
+          <ScalarProperty Name="value" ColumnName="value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PostRecomendeds">
+      <EntityTypeMapping TypeName="LoaPhatThanhModel.PostRecomended">
+        <MappingFragment StoreEntitySet="PostRecomended">
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="count" ColumnName="count" />
+          <ScalarProperty Name="atribute_id" ColumnName="atribute_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FavoritePost" TypeName="LoaPhatThanhModel.FavoritePost" StoreEntitySet="FavoritePost">
+      <EndProperty Name="User">
+        <ScalarProperty Name="user_id" ColumnName="user_id" />
+      </EndProperty>
+      <EndProperty Name="Post">
+        <ScalarProperty Name="post_id" ColumnName="post_id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="Follow" TypeName="LoaPhatThanhModel.Follow" StoreEntitySet="Follow">
+      <EndProperty Name="User">
+        <ScalarProperty Name="user_id" ColumnName="user_id" />
+      </EndProperty>
+      <EndProperty Name="User1">
+        <ScalarProperty Name="user_id" ColumnName="follower" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

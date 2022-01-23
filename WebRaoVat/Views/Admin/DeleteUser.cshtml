@@ -1,0 +1,21 @@
+﻿@model WebRaoVat.Models.User
+@{
+    ViewBag.Title = "Delete User";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-6" style="text-align: center; padding: 15px; font-size: 18pt;">
+    <h2 class="title-page">Delete User: @Model.user_id?</h2>
+    <div><img src="@Model.image" width="200" style="object-fit: contain;" /></div>
+    <div>Permission: @Html.DisplayFor(model => model.Permission.permission1)</div>
+    <br />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <a href="@Url.Action("ManageUser","Admin")" class="admin-btn-no">&#8678 Manage page</a>
+            <input type="submit" value="Delete!" class="admin-btn" style="float:none;" />
+        </div>
+    }
+</div>

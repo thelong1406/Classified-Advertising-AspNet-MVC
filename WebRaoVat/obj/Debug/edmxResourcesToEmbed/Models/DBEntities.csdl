@@ -1,0 +1,751 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LoaPhatThanhModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="AbtributeAndValue">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="value" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="post_id" Type="Int32" Nullable="false" />
+    <Property Name="atribute_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Atribute" Relationship="Self.FK__Abtribute__atrib__66603565" FromRole="AbtributeAndValue" ToRole="Atribute" />
+    <NavigationProperty Name="Post" Relationship="Self.FK__Abtribute__post___5070F446" FromRole="AbtributeAndValue" ToRole="Post" />
+  </EntityType>
+  <EntityType Name="Atribute">
+    <Key>
+      <PropertyRef Name="atribute_id" />
+    </Key>
+    <Property Name="atribute_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="atribute_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="category_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="AbtributeAndValues" Relationship="Self.FK__Abtribute__atrib__66603565" FromRole="Atribute" ToRole="AbtributeAndValue" />
+    <NavigationProperty Name="Category" Relationship="Self.FK__Atribute__catego__5FB337D6" FromRole="Atribute" ToRole="Category" />
+  </EntityType>
+  <EntityType Name="Brand">
+    <Key>
+      <PropertyRef Name="brand_id" />
+    </Key>
+    <Property Name="brand_id" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="brand1" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="logo" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="BrandSelects" Relationship="Self.FK__BrandSele__brand__656C112C" FromRole="Brand" ToRole="BrandSelect" />
+  </EntityType>
+  <EntityType Name="BrandSelect">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="brand_id" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="seccond_cate_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Brand" Relationship="Self.FK__BrandSele__brand__656C112C" FromRole="BrandSelect" ToRole="Brand" />
+    <NavigationProperty Name="SeccondCategory" Relationship="Self.FK__BrandSele__secco__619B8048" FromRole="BrandSelect" ToRole="SeccondCategory" />
+    <NavigationProperty Name="Products" Relationship="Self.FK__Product__id__6477ECF3" FromRole="BrandSelect" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="category_id" />
+    </Key>
+    <Property Name="category_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="category1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Atributes" Relationship="Self.FK__Atribute__catego__5FB337D6" FromRole="Category" ToRole="Atribute" />
+    <NavigationProperty Name="Posts" Relationship="Self.FK__Post__category_i__5CD6CB2B" FromRole="Category" ToRole="Post" />
+    <NavigationProperty Name="SeccondCategories" Relationship="Self.FK__SeccondCa__categ__5EBF139D" FromRole="Category" ToRole="SeccondCategory" />
+  </EntityType>
+  <EntityType Name="Dealed">
+    <Key>
+      <PropertyRef Name="deal_id" />
+    </Key>
+    <Property Name="deal_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="deal_date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="is_delivering" Type="Boolean" Nullable="false" />
+    <Property Name="is_dealed" Type="Boolean" Nullable="false" />
+    <Property Name="is_pending" Type="Boolean" Nullable="false" />
+    <Property Name="post_id" Type="Int32" Nullable="false" />
+    <Property Name="user_id" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Post" Relationship="Self.FK__Dealed__post_id__4F7CD00D" FromRole="Dealed" ToRole="Post" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Dealed__user_id__5629CD9C" FromRole="Dealed" ToRole="User" />
+  </EntityType>
+  <EntityType Name="District">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProvinceId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Province" Relationship="Self.FK_District_Province" FromRole="District" ToRole="Province" />
+    <NavigationProperty Name="Wards" Relationship="Self.FK_Ward_District" FromRole="District" ToRole="Ward" />
+  </EntityType>
+  <EntityType Name="Favorite">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="post_id" Type="Int32" Nullable="false" />
+    <Property Name="user_id" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Post" Relationship="Self.FK__Favorite__post_i__4D94879B" FromRole="Favorite" ToRole="Post" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Favorite__user_i__5535A963" FromRole="Favorite" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Follow">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="user_id" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="follower" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Follow__follower__5441852A" FromRole="Follow" ToRole="User" />
+    <NavigationProperty Name="User1" Relationship="Self.FK__Follow__user_id__534D60F1" FromRole="Follow" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Image">
+    <Key>
+      <PropertyRef Name="image_id" />
+    </Key>
+    <Property Name="image_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="link" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="post_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Post" Relationship="Self.FK__Image__post_id__4CA06362" FromRole="Image" ToRole="Post" />
+  </EntityType>
+  <EntityType Name="Notification">
+    <Key>
+      <PropertyRef Name="notification_id" />
+    </Key>
+    <Property Name="notification_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="post_id" Type="Int32" />
+    <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="value" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="request_delivery" Type="Boolean" Nullable="false" />
+    <Property Name="follow_action" Type="Boolean" Nullable="false" />
+    <Property Name="post_action" Type="Boolean" Nullable="false" />
+    <Property Name="user_id" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="reciever" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="is_read" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Post" Relationship="Self.FK__Notificat__post___5165187F" FromRole="Notification" ToRole="Post" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Notificat__recie__59FA5E80" FromRole="Notification" ToRole="User" />
+    <NavigationProperty Name="User1" Relationship="Self.FK__Notificat__user___59063A47" FromRole="Notification" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Permission">
+    <Key>
+      <PropertyRef Name="permission_id" />
+    </Key>
+    <Property Name="permission_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="permission1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="Self.FK__User__permission__5AEE82B9" FromRole="Permission" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Post">
+    <Key>
+      <PropertyRef Name="post_id" />
+    </Key>
+    <Property Name="post_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="user_id" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ward_id" Type="Int32" Nullable="false" />
+    <Property Name="title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="content" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="date_posted" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="price" Type="Double" Nullable="false" />
+    <Property Name="is_hided" Type="Boolean" Nullable="false" />
+    <Property Name="is_approved" Type="Boolean" Nullable="false" />
+    <Property Name="is_seller" Type="Boolean" Nullable="false" />
+    <Property Name="category_id" Type="Int32" Nullable="false" />
+    <Property Name="product_id" Type="Int32" />
+    <Property Name="seccond_cate_id" Type="Int32" Nullable="false" />
+    <Property Name="third_cate_id" Type="Int32" />
+    <NavigationProperty Name="AbtributeAndValues" Relationship="Self.FK__Abtribute__post___5070F446" FromRole="Post" ToRole="AbtributeAndValue" />
+    <NavigationProperty Name="Category" Relationship="Self.FK__Post__category_i__5CD6CB2B" FromRole="Post" ToRole="Category" />
+    <NavigationProperty Name="Dealeds" Relationship="Self.FK__Dealed__post_id__4F7CD00D" FromRole="Post" ToRole="Dealed" />
+    <NavigationProperty Name="Favorites" Relationship="Self.FK__Favorite__post_i__4D94879B" FromRole="Post" ToRole="Favorite" />
+    <NavigationProperty Name="Images" Relationship="Self.FK__Image__post_id__4CA06362" FromRole="Post" ToRole="Image" />
+    <NavigationProperty Name="Notifications" Relationship="Self.FK__Notificat__post___5165187F" FromRole="Post" ToRole="Notification" />
+    <NavigationProperty Name="Product" Relationship="Self.FK__Post__category_i__5DCAEF64" FromRole="Post" ToRole="Product" />
+    <NavigationProperty Name="SeccondCategory" Relationship="Self.FK__Post__seccond_ca__628FA481" FromRole="Post" ToRole="SeccondCategory" />
+    <NavigationProperty Name="ThirdCategory" Relationship="Self.FK__Post__third_cate__6383C8BA" FromRole="Post" ToRole="ThirdCategory" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Post__user_id__52593CB8" FromRole="Post" ToRole="User" />
+    <NavigationProperty Name="Ward" Relationship="Self.FK__Post__ward_id__5BE2A6F2" FromRole="Post" ToRole="Ward" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="product_id" />
+    </Key>
+    <Property Name="product_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="product1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="BrandSelect" Relationship="Self.FK__Product__id__6477ECF3" FromRole="Product" ToRole="BrandSelect" />
+    <NavigationProperty Name="Posts" Relationship="Self.FK__Post__category_i__5DCAEF64" FromRole="Product" ToRole="Post" />
+  </EntityType>
+  <EntityType Name="Province">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Districts" Relationship="Self.FK_District_Province" FromRole="Province" ToRole="District" />
+  </EntityType>
+  <EntityType Name="RateUser">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="who_rate_id" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="who_be_rated_id" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="rate" Type="Double" Nullable="false" />
+    <Property Name="comment" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="User" Relationship="Self.FK__RateUser__who_be__5812160E" FromRole="RateUser" ToRole="User" />
+    <NavigationProperty Name="User1" Relationship="Self.FK__RateUser__who_ra__571DF1D5" FromRole="RateUser" ToRole="User" />
+  </EntityType>
+  <EntityType Name="SeccondCategory">
+    <Key>
+      <PropertyRef Name="seccond_cate_id" />
+    </Key>
+    <Property Name="seccond_cate_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="seccond_cate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="category_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="BrandSelects" Relationship="Self.FK__BrandSele__secco__619B8048" FromRole="SeccondCategory" ToRole="BrandSelect" />
+    <NavigationProperty Name="Category" Relationship="Self.FK__SeccondCa__categ__5EBF139D" FromRole="SeccondCategory" ToRole="Category" />
+    <NavigationProperty Name="Posts" Relationship="Self.FK__Post__seccond_ca__628FA481" FromRole="SeccondCategory" ToRole="Post" />
+    <NavigationProperty Name="ThirdCategories" Relationship="Self.FK__ThirdCate__secco__60A75C0F" FromRole="SeccondCategory" ToRole="ThirdCategory" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="ThirdCategory">
+    <Key>
+      <PropertyRef Name="third_cate_id" />
+    </Key>
+    <Property Name="third_cate_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="seccond_cate_id_1" Type="Int32" Nullable="false" />
+    <Property Name="third_cate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Posts" Relationship="Self.FK__Post__third_cate__6383C8BA" FromRole="ThirdCategory" ToRole="Post" />
+    <NavigationProperty Name="SeccondCategory" Relationship="Self.FK__ThirdCate__secco__60A75C0F" FromRole="ThirdCategory" ToRole="SeccondCategory" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="permission_id" Type="Int32" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="phone" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="image" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="rate" Type="Double" Nullable="false" />
+    <Property Name="rate_count" Type="Int32" Nullable="false" />
+    <Property Name="date_join" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Token" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Dealeds" Relationship="Self.FK__Dealed__user_id__5629CD9C" FromRole="User" ToRole="Dealed" />
+    <NavigationProperty Name="Favorites" Relationship="Self.FK__Favorite__user_i__5535A963" FromRole="User" ToRole="Favorite" />
+    <NavigationProperty Name="Follows" Relationship="Self.FK__Follow__follower__5441852A" FromRole="User" ToRole="Follow" />
+    <NavigationProperty Name="Follows1" Relationship="Self.FK__Follow__user_id__534D60F1" FromRole="User" ToRole="Follow" />
+    <NavigationProperty Name="Notifications" Relationship="Self.FK__Notificat__recie__59FA5E80" FromRole="User" ToRole="Notification" />
+    <NavigationProperty Name="Notifications1" Relationship="Self.FK__Notificat__user___59063A47" FromRole="User" ToRole="Notification" />
+    <NavigationProperty Name="Permission" Relationship="Self.FK__User__permission__5AEE82B9" FromRole="User" ToRole="Permission" />
+    <NavigationProperty Name="Posts" Relationship="Self.FK__Post__user_id__52593CB8" FromRole="User" ToRole="Post" />
+    <NavigationProperty Name="RateUsers" Relationship="Self.FK__RateUser__who_be__5812160E" FromRole="User" ToRole="RateUser" />
+    <NavigationProperty Name="RateUsers1" Relationship="Self.FK__RateUser__who_ra__571DF1D5" FromRole="User" ToRole="RateUser" />
+  </EntityType>
+  <EntityType Name="Ward">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DistrictID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="District" Relationship="Self.FK_Ward_District" FromRole="Ward" ToRole="District" />
+    <NavigationProperty Name="Posts" Relationship="Self.FK__Post__ward_id__5BE2A6F2" FromRole="Ward" ToRole="Post" />
+  </EntityType>
+  <Association Name="FK__Abtribute__atrib__66603565">
+    <End Role="Atribute" Type="Self.Atribute" Multiplicity="1" />
+    <End Role="AbtributeAndValue" Type="Self.AbtributeAndValue" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Atribute">
+        <PropertyRef Name="atribute_id" />
+      </Principal>
+      <Dependent Role="AbtributeAndValue">
+        <PropertyRef Name="atribute_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Abtribute__post___5070F446">
+    <End Role="Post" Type="Self.Post" Multiplicity="1" />
+    <End Role="AbtributeAndValue" Type="Self.AbtributeAndValue" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Post">
+        <PropertyRef Name="post_id" />
+      </Principal>
+      <Dependent Role="AbtributeAndValue">
+        <PropertyRef Name="post_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Atribute__catego__5FB337D6">
+    <End Role="Category" Type="Self.Category" Multiplicity="1" />
+    <End Role="Atribute" Type="Self.Atribute" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="category_id" />
+      </Principal>
+      <Dependent Role="Atribute">
+        <PropertyRef Name="category_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__BrandSele__brand__656C112C">
+    <End Role="Brand" Type="Self.Brand" Multiplicity="1" />
+    <End Role="BrandSelect" Type="Self.BrandSelect" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Brand">
+        <PropertyRef Name="brand_id" />
+      </Principal>
+      <Dependent Role="BrandSelect">
+        <PropertyRef Name="brand_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__BrandSele__secco__619B8048">
+    <End Role="SeccondCategory" Type="Self.SeccondCategory" Multiplicity="1" />
+    <End Role="BrandSelect" Type="Self.BrandSelect" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SeccondCategory">
+        <PropertyRef Name="seccond_cate_id" />
+      </Principal>
+      <Dependent Role="BrandSelect">
+        <PropertyRef Name="seccond_cate_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Product__id__6477ECF3">
+    <End Role="BrandSelect" Type="Self.BrandSelect" Multiplicity="1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BrandSelect">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Post__category_i__5CD6CB2B">
+    <End Role="Category" Type="Self.Category" Multiplicity="1" />
+    <End Role="Post" Type="Self.Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="category_id" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="category_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SeccondCa__categ__5EBF139D">
+    <End Role="Category" Type="Self.Category" Multiplicity="1" />
+    <End Role="SeccondCategory" Type="Self.SeccondCategory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="category_id" />
+      </Principal>
+      <Dependent Role="SeccondCategory">
+        <PropertyRef Name="category_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Dealed__post_id__4F7CD00D">
+    <End Role="Post" Type="Self.Post" Multiplicity="1" />
+    <End Role="Dealed" Type="Self.Dealed" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Post">
+        <PropertyRef Name="post_id" />
+      </Principal>
+      <Dependent Role="Dealed">
+        <PropertyRef Name="post_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Dealed__user_id__5629CD9C">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Dealed" Type="Self.Dealed" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="Dealed">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_District_Province">
+    <End Role="Province" Type="Self.Province" Multiplicity="1" />
+    <End Role="District" Type="Self.District" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Province">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="District">
+        <PropertyRef Name="ProvinceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Ward_District">
+    <End Role="District" Type="Self.District" Multiplicity="1" />
+    <End Role="Ward" Type="Self.Ward" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="District">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Ward">
+        <PropertyRef Name="DistrictID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Favorite__post_i__4D94879B">
+    <End Role="Post" Type="Self.Post" Multiplicity="1" />
+    <End Role="Favorite" Type="Self.Favorite" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Post">
+        <PropertyRef Name="post_id" />
+      </Principal>
+      <Dependent Role="Favorite">
+        <PropertyRef Name="post_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Favorite__user_i__5535A963">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Favorite" Type="Self.Favorite" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="Favorite">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Follow__follower__5441852A">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Follow" Type="Self.Follow" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="Follow">
+        <PropertyRef Name="follower" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Follow__user_id__534D60F1">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Follow" Type="Self.Follow" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="Follow">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Image__post_id__4CA06362">
+    <End Role="Post" Type="Self.Post" Multiplicity="1" />
+    <End Role="Image" Type="Self.Image" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Post">
+        <PropertyRef Name="post_id" />
+      </Principal>
+      <Dependent Role="Image">
+        <PropertyRef Name="post_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Notificat__post___5165187F">
+    <End Role="Post" Type="Self.Post" Multiplicity="0..1" />
+    <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Post">
+        <PropertyRef Name="post_id" />
+      </Principal>
+      <Dependent Role="Notification">
+        <PropertyRef Name="post_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Notificat__recie__59FA5E80">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="Notification">
+        <PropertyRef Name="reciever" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Notificat__user___59063A47">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="Notification">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__User__permission__5AEE82B9">
+    <End Role="Permission" Type="Self.Permission" Multiplicity="1" />
+    <End Role="User" Type="Self.User" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Permission">
+        <PropertyRef Name="permission_id" />
+      </Principal>
+      <Dependent Role="User">
+        <PropertyRef Name="permission_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Post__category_i__5DCAEF64">
+    <End Role="Product" Type="Self.Product" Multiplicity="1" />
+    <End Role="Post" Type="Self.Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="product_id" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="category_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Post__seccond_ca__628FA481">
+    <End Role="SeccondCategory" Type="Self.SeccondCategory" Multiplicity="1" />
+    <End Role="Post" Type="Self.Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SeccondCategory">
+        <PropertyRef Name="seccond_cate_id" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="seccond_cate_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Post__third_cate__6383C8BA">
+    <End Role="ThirdCategory" Type="Self.ThirdCategory" Multiplicity="0..1" />
+    <End Role="Post" Type="Self.Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ThirdCategory">
+        <PropertyRef Name="third_cate_id" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="third_cate_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Post__user_id__52593CB8">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Post" Type="Self.Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Post__ward_id__5BE2A6F2">
+    <End Role="Ward" Type="Self.Ward" Multiplicity="1" />
+    <End Role="Post" Type="Self.Post" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ward">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Post">
+        <PropertyRef Name="ward_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__RateUser__who_be__5812160E">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="RateUser" Type="Self.RateUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="RateUser">
+        <PropertyRef Name="who_be_rated_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__RateUser__who_ra__571DF1D5">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="RateUser" Type="Self.RateUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="RateUser">
+        <PropertyRef Name="who_rate_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ThirdCate__secco__60A75C0F">
+    <End Role="SeccondCategory" Type="Self.SeccondCategory" Multiplicity="1" />
+    <End Role="ThirdCategory" Type="Self.ThirdCategory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SeccondCategory">
+        <PropertyRef Name="seccond_cate_id" />
+      </Principal>
+      <Dependent Role="ThirdCategory">
+        <PropertyRef Name="seccond_cate_id_1" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LoaPhatThanhEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AbtributeAndValues" EntityType="Self.AbtributeAndValue" />
+    <EntitySet Name="Atributes" EntityType="Self.Atribute" />
+    <EntitySet Name="Brands" EntityType="Self.Brand" />
+    <EntitySet Name="BrandSelects" EntityType="Self.BrandSelect" />
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="Dealeds" EntityType="Self.Dealed" />
+    <EntitySet Name="Districts" EntityType="Self.District" />
+    <EntitySet Name="Favorites" EntityType="Self.Favorite" />
+    <EntitySet Name="Follows" EntityType="Self.Follow" />
+    <EntitySet Name="Images" EntityType="Self.Image" />
+    <EntitySet Name="Notifications" EntityType="Self.Notification" />
+    <EntitySet Name="Permissions" EntityType="Self.Permission" />
+    <EntitySet Name="Posts" EntityType="Self.Post" />
+    <EntitySet Name="Products" EntityType="Self.Product" />
+    <EntitySet Name="Provinces" EntityType="Self.Province" />
+    <EntitySet Name="RateUsers" EntityType="Self.RateUser" />
+    <EntitySet Name="SeccondCategories" EntityType="Self.SeccondCategory" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="ThirdCategories" EntityType="Self.ThirdCategory" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <EntitySet Name="Wards" EntityType="Self.Ward" />
+    <AssociationSet Name="FK__Abtribute__atrib__66603565" Association="Self.FK__Abtribute__atrib__66603565">
+      <End Role="Atribute" EntitySet="Atributes" />
+      <End Role="AbtributeAndValue" EntitySet="AbtributeAndValues" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Abtribute__post___5070F446" Association="Self.FK__Abtribute__post___5070F446">
+      <End Role="Post" EntitySet="Posts" />
+      <End Role="AbtributeAndValue" EntitySet="AbtributeAndValues" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Atribute__catego__5FB337D6" Association="Self.FK__Atribute__catego__5FB337D6">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="Atribute" EntitySet="Atributes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__BrandSele__brand__656C112C" Association="Self.FK__BrandSele__brand__656C112C">
+      <End Role="Brand" EntitySet="Brands" />
+      <End Role="BrandSelect" EntitySet="BrandSelects" />
+    </AssociationSet>
+    <AssociationSet Name="FK__BrandSele__secco__619B8048" Association="Self.FK__BrandSele__secco__619B8048">
+      <End Role="SeccondCategory" EntitySet="SeccondCategories" />
+      <End Role="BrandSelect" EntitySet="BrandSelects" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Product__id__6477ECF3" Association="Self.FK__Product__id__6477ECF3">
+      <End Role="BrandSelect" EntitySet="BrandSelects" />
+      <End Role="Product" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Post__category_i__5CD6CB2B" Association="Self.FK__Post__category_i__5CD6CB2B">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="Post" EntitySet="Posts" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SeccondCa__categ__5EBF139D" Association="Self.FK__SeccondCa__categ__5EBF139D">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="SeccondCategory" EntitySet="SeccondCategories" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Dealed__post_id__4F7CD00D" Association="Self.FK__Dealed__post_id__4F7CD00D">
+      <End Role="Post" EntitySet="Posts" />
+      <End Role="Dealed" EntitySet="Dealeds" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Dealed__user_id__5629CD9C" Association="Self.FK__Dealed__user_id__5629CD9C">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Dealed" EntitySet="Dealeds" />
+    </AssociationSet>
+    <AssociationSet Name="FK_District_Province" Association="Self.FK_District_Province">
+      <End Role="Province" EntitySet="Provinces" />
+      <End Role="District" EntitySet="Districts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Ward_District" Association="Self.FK_Ward_District">
+      <End Role="District" EntitySet="Districts" />
+      <End Role="Ward" EntitySet="Wards" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Favorite__post_i__4D94879B" Association="Self.FK__Favorite__post_i__4D94879B">
+      <End Role="Post" EntitySet="Posts" />
+      <End Role="Favorite" EntitySet="Favorites" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Favorite__user_i__5535A963" Association="Self.FK__Favorite__user_i__5535A963">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Favorite" EntitySet="Favorites" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Follow__follower__5441852A" Association="Self.FK__Follow__follower__5441852A">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Follow" EntitySet="Follows" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Follow__user_id__534D60F1" Association="Self.FK__Follow__user_id__534D60F1">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Follow" EntitySet="Follows" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Image__post_id__4CA06362" Association="Self.FK__Image__post_id__4CA06362">
+      <End Role="Post" EntitySet="Posts" />
+      <End Role="Image" EntitySet="Images" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Notificat__post___5165187F" Association="Self.FK__Notificat__post___5165187F">
+      <End Role="Post" EntitySet="Posts" />
+      <End Role="Notification" EntitySet="Notifications" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Notificat__recie__59FA5E80" Association="Self.FK__Notificat__recie__59FA5E80">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Notification" EntitySet="Notifications" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Notificat__user___59063A47" Association="Self.FK__Notificat__user___59063A47">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Notification" EntitySet="Notifications" />
+    </AssociationSet>
+    <AssociationSet Name="FK__User__permission__5AEE82B9" Association="Self.FK__User__permission__5AEE82B9">
+      <End Role="Permission" EntitySet="Permissions" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Post__category_i__5DCAEF64" Association="Self.FK__Post__category_i__5DCAEF64">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="Post" EntitySet="Posts" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Post__seccond_ca__628FA481" Association="Self.FK__Post__seccond_ca__628FA481">
+      <End Role="SeccondCategory" EntitySet="SeccondCategories" />
+      <End Role="Post" EntitySet="Posts" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Post__third_cate__6383C8BA" Association="Self.FK__Post__third_cate__6383C8BA">
+      <End Role="ThirdCategory" EntitySet="ThirdCategories" />
+      <End Role="Post" EntitySet="Posts" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Post__user_id__52593CB8" Association="Self.FK__Post__user_id__52593CB8">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Post" EntitySet="Posts" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Post__ward_id__5BE2A6F2" Association="Self.FK__Post__ward_id__5BE2A6F2">
+      <End Role="Ward" EntitySet="Wards" />
+      <End Role="Post" EntitySet="Posts" />
+    </AssociationSet>
+    <AssociationSet Name="FK__RateUser__who_be__5812160E" Association="Self.FK__RateUser__who_be__5812160E">
+      <End Role="User" EntitySet="Users" />
+      <End Role="RateUser" EntitySet="RateUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__RateUser__who_ra__571DF1D5" Association="Self.FK__RateUser__who_ra__571DF1D5">
+      <End Role="User" EntitySet="Users" />
+      <End Role="RateUser" EntitySet="RateUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ThirdCate__secco__60A75C0F" Association="Self.FK__ThirdCate__secco__60A75C0F">
+      <End Role="SeccondCategory" EntitySet="SeccondCategories" />
+      <End Role="ThirdCategory" EntitySet="ThirdCategories" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

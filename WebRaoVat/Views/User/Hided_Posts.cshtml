@@ -1,0 +1,50 @@
+﻿@using WebRaoVat.Models
+@model List<WebRaoVat.Models.Post>
+
+<style>
+    .border-item:hover {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .dropbtn:hover {
+        color: #45526c;
+        text-decoration: none;
+    }
+
+    .dropdown a:hover {
+        background-color: none;
+    }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+<div class="container border-xanhnhat">
+    @foreach (var item in Model)
+    {
+        <div class="row border-item" style="margin-bottom: 1vw; margin-right:0px;margin-left:0px; cursor: pointer; user-select: none;">
+            <div class="col-md-2" style="padding:10px" onclick="document.location.href = '@Url.Action("PostDetail", "Post", new { @id = item.post_id })'">
+                <img src="@Url.Content(item.hinh)" width="150" height="150" />
+            </div>
+            <div class="col-md-9" onclick="document.location.href = '@Url.Action("PostDetail", "Post", new { @id = item.post_id })'">
+                <div class="row" style="font-size:30px">@Html.DisplayFor(model => item.title)</div>
+                <div class="row">@Html.DisplayFor(model => item.SeccondCategory.seccond_cate)</div>
+                <div class="row" style="color:red;"><span style="color:black">Price: </span> $@Html.DisplayFor(model => item.price)</div>
+                <div class="row"><span style="color:black">Date Post: </span> @Html.DisplayFor(model => item.date_posted)</div>
+                <div class="row"><span style="color:black">Location: </span>@Html.DisplayFor(model => item.Ward.Type) @Html.DisplayFor(model => item.Ward.Name) - @Html.DisplayFor(model => item.Ward.District.Type) @Html.DisplayFor(model => item.Ward.District.Name) - @Html.DisplayFor(model => item.Ward.District.Province.Type) @Html.DisplayFor(model => item.Ward.District.Province.Name)</div>
+            </div>
+            <div class="col-md-1">
+                <div class="dropdown">
+                    <a id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropbtn">...</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="@Url.Action("EditPost", "Post", new { @id = item.post_id })"><img src="~/Content/Images/icon/edit.png" width="15" style="object-fit: contain" />Edit Post</a>
+                        <a class="dropdown-item" href="@Url.Action("UnhideThisPost", "User", new { @id = item.post_id })"><img src="~/Content/Images/icon/hide.png" width="15" style="object-fit: contain" />Unhide Post</a>
+                        <a class="dropdown-item" href="@Url.Action("DeletePost", "Post", new { @id = item.post_id, @urlstr = Request.Url.ToString() })"><img src="~/Content/Images/icon/delete.png" width="15" style="object-fit: contain" />Delete Post</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>

@@ -1,0 +1,124 @@
+﻿@using PagedList.Mvc;
+@model PagedList.PagedList<WebRaoVat.Models.Notification>
+@{
+    ViewBag.Title = "My Notifications";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int countUnread = (int)ViewBag.CountUnread;
+    int dem = 0;    
+    string color;
+
+}
+<link href="~/Content/long_trinh.css" rel="stylesheet" />
+
+<div class="container">
+    <div class="col-md-8 noti-list">
+        @if (countUnread > 0)
+        {
+        <h3 class="noti-page">
+            You have @ViewBag.CountUnread unread
+            @if (countUnread > 1)
+            {<span> notifications</span>}
+            else
+            {<span>notification</span>}
+        </h3>
+        }
+        else
+        {
+            <h3 class="noti-page">Nothing changed!</h3>
+        }
+        <h3 class="noti-page">@ViewBag.NullNoti</h3>
+        <hr />
+        @foreach (var item in Model)
+            {
+                if (countUnread > 0 && dem < countUnread)
+                {
+                    color = "#ff96ad";
+                }
+                else
+                {
+                    color = "#fff";
+                }
+                if (item.post_action == true) //Thong bao la viec dang tin
+                {
+                    <div class="notifi-item" style="background-color: @color;">
+                        <div class="row">
+                            <div class="col-4 follow-noti noselect" onclick="document.location.href = '@Url.Action("ViewUser", "User", new { id = item.user_id })'">
+                                <img src="@item.User1.image" class="noti-image" />
+                            </div>
+                            <div class="col-8 follow-noti noselect" onclick="document.location.href = '@Url.Action("PostDetail", "Post", new { id = item.post_id })'">
+                                <h3>@item.user_id have posted something</h3>
+                                <h4><strong>@item.Post.title</strong></h4>
+                                <p class="noti-price"><strong>Price: @item.Post.price</strong></p>
+                                @if (item.Post.product_id != null)
+                                {
+                                    <p>Product: @item.Post.Product.BrandSelect.Brand.brand1 @item.Post.Product.product1</p>
+                                }                         
+                                <p class="noti-content">@item.Post.Ward.Type @item.Post.Ward.Name - @item.Post.Ward.District.Type @item.Post.Ward.District.Name - @item.Post.Ward.District.Province.Type @item.Post.Ward.District.Province.Name </p>
+                                <p style="text-align: right" class="noti-content">@item.time.ToLongDateString()</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (item.follow_action == true) //Thong bao la viec follow
+                {
+                    <div class="notifi-item follow-noti" onclick="document.location.href = '@Url.Action("ViewUser", "User", new { id = item.user_id })'" style="background-color: @color;">
+                        <div class="row">
+                            <div class="col-4">
+                                <img src="@item.User1.image" class="noti-image" alt="Click to view this user" />
+                            </div>
+                            <div class="col-8">
+                                <h3 class="noti-title">@item.value</h3>
+                                @if (item.User1.rate > 0 && item.User1.rate_count > 0)
+                                {
+                                    double rate = item.User1.rate / item.User1.rate_count;
+                                    <p class="noti-content">Rating: @rate</p>
+                                }
+                                else
+                                { <p class="noti-content">Rating: Hasn't be rated yet!</p>}
+                                <p class="noti-content">Posted: @item.User1.Posts.Where(p => p.is_approved == true && p.is_hided == false).Count()</p>
+                                <p class="noti-content">Dealeds: @item.User1.Dealeds.Count()</p>
+                                <p style="text-align: right" class="noti-content">@item.time.ToLongDateString()</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (item.request_delivery == true) // Thong bao la hanh dong yeu cau giao hang
+                {
+                    <div class="notifi-item" style="background-color: @color;">
+                        <div class="row">
+                            <div class="col-4 follow-noti" onclick="document.location.href = '@Url.Action("ViewUser", "User", new { id = item.user_id })'">
+                                <img src="@item.User1.image" class="noti-image" />
+                            </div>
+                            <div class="col-8 follow-noti" @*onclick="document.location.href = '@Url.Action("PostDetail", "Post", new { id = item.post_id })'"*@>
+                                <h4>@item.user_id have request you to delievery @item.Post.Product.BrandSelect.Brand.brand1 @item.Post.Product.product1!</h4>
+                                <p class="noti-content">@item.value</p>
+                                <p class="noti-content">Phone: @item.User.phone</p>
+                                @if (item.is_read == false)
+                                {
+                                    <p style="text-align: center;">Will you delievery this product to @item.user_id?</p>
+                                    <div class="row" style="display: flex;">
+                                        <div class="col-md-6">
+                                            <div onclick="document.location.href='@Url.Action("DeleteDeal", "Deal", new { postID = (int)item.post_id, userID = item.user_id, notiID = item.notification_id })'" class="light-theme-btn noselect btn-90-width" style="width: 100%; z-index: 9999;">No</div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div onclick="document.location.href='@Url.Action("AcceptDeal", "Deal", new { postID = (int)item.post_id, userID = item.user_id, notiID = item.notification_id })'" class="theme-btn noselect btn-90-width" style="width: 100%; z-index: 9999;">Yes, I will</div>
+                                        </div>
+                                    </div>
+                                }
+                                <p style="text-align: right" class="noti-content">@item.time.ToLongDateString()</p>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+                if (dem == countUnread - 1 && countUnread > 0)
+                {
+                    <p class="read-all">
+                        You have read all notifications
+                    </p>
+                }
+                dem++;
+            }  
+    </div>
+</div>
+<div class="clear-noti" onclick="document.location.href='@Url.Action("ClearAllRead", "Notification", new { userID = Model.First().reciever })'">Clear all reads</div>

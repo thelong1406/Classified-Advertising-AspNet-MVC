@@ -1,0 +1,28 @@
+﻿@model WebRaoVat.Models.Product
+
+@{
+    ViewBag.Title = "Delete Product";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div>
+    <div class="col-6" style="text-align: center; padding: 15px; font-size: 18pt;">
+        <h2 class="title-page">Delete Product: <br /> @Model.product1?</h2>
+        <div>
+            @Html.DisplayFor(model => model.BrandSelect.SeccondCategory.seccond_cate)
+        </div>
+        <div>
+            <img src="@Model.BrandSelect.Brand.logo" style="width: 100px; object-fit: contain;" />
+        </div>
+        <div>
+            @Html.DisplayFor(model => model.BrandSelect.Brand.brand1)
+        </div>
+        <br />
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <a href="@Url.Action("ManageProduct","Admin")" class="admin-btn-no">&#8678 Manage page</a>
+            <input type="submit" value="Delete!" class="admin-btn" style="float:none;" />
+        }
+    </div>
+</div>

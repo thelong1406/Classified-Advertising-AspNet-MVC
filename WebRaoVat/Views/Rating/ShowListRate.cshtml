@@ -1,0 +1,23 @@
+﻿@model IEnumerable<WebRaoVat.Models.RateUser>
+<link href="~/Content/long_trinh.css" rel="stylesheet" />
+
+<h3 class="noti-title" style="text-align: center;">@Model.FirstOrDefault().who_be_rated_id's rated list</h3>
+<div class="container">
+    @foreach (var item in Model)
+    {
+        <div class="row deal-item noselect" style="padding-top: 10px;">
+            <div class="col-md-3">
+                <img src="@item.User1.image" alt="Click to view this user" class="deal-image" style="width: 100px;" onclick="document.location.href = '@Url.Action("ProfileUser","User", new { id = item.User1.user_id})'" />
+            </div>
+            <div class="col-md-9">
+                <h4>@item.who_rate_id</h4>
+                <p class="gold-text" style="font-size: 1.2rem">@for (int i = 1; i <= item.rate; i++){<span>&#9733;</span>}
+                   @for(int i = 1; i <= 5-item.rate;i++)
+                   { <span>&#9734;</span>}
+                </p>
+                <p class="noti-content" style="font-size: 1rem;"><i>"@item.comment"</i></p>
+            </div>
+        </div>
+    }
+</div>
+

@@ -1,0 +1,34 @@
+﻿@using WebRaoVat.Models
+@model List<WebRaoVat.Models.Post>
+
+<style>
+    .border-item:hover {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+</style>
+@{ 
+    User currentUser = (User)Session["User"];
+}
+
+<div class="container border-xanhnhat">
+    @foreach (var item in Model)
+    {
+        <div class="row border-item" style="margin-bottom: 1vw; margin-right:0px;margin-left:0px; cursor: pointer; user-select: none;">
+            <div class="col-md-2" style="padding:10px" onclick="document.location.href = '@Url.Action("PostDetail", "Post", new { @id = item.post_id })'">
+                <img src="@Url.Content(item.hinh)" width="150" height="150" />
+            </div>
+            <div class="col-md-8" onclick="document.location.href = '@Url.Action("PostDetail", "Post", new { @id = item.post_id })'">
+                <div class="row" style="font-size:30px">@Html.DisplayFor(model => item.title)</div>
+                <div class="row">@Html.DisplayFor(model => item.SeccondCategory.seccond_cate)</div>
+                <div class="row" style="color:red;"><span style="color:black">Price: $</span> $@Html.DisplayFor(model => item.price)</div>
+                <div class="row"><span style="color:black">Date Post: </span> @Html.DisplayFor(model => item.date_posted)</div>
+                <div class="row"><span style="color:black">Location: </span>@Html.DisplayFor(model => item.Ward.Type) @Html.DisplayFor(model => item.Ward.Name) - @Html.DisplayFor(model => item.Ward.District.Type) @Html.DisplayFor(model => item.Ward.District.Name) - @Html.DisplayFor(model => item.Ward.District.Province.Type) @Html.DisplayFor(model => item.Ward.District.Province.Name)</div>
+            </div>
+            <div class="col-md-2">
+                <div onclick="document.location.href='@Url.Action("SavePost","Post", new { @id = item.post_id,@userid=currentUser.user_id, @urlstr = Request.Url.ToString() })'" class="bg-hong theme-btn noselect" style="margin-top:15px;">Unsaved Post</div>
+            </div>
+        </div>
+
+    }
+</div>
+<script src="~/Scripts/DropdownList.js"></script>

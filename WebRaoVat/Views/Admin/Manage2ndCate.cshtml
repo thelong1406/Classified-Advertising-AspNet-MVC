@@ -1,0 +1,48 @@
+﻿@using WebRaoVat.Models
+@using PagedList.Mvc;
+@model PagedList.PagedList<SeccondCategory>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Manage Category";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="title-page">Manage Category</h2>
+<div class="btn btn-info" onclick="document.location.href = '@Url.Action("Create2ndCate","Admin")'">Create new category</div>
+<br />
+<br />
+
+<table class="table">
+    <tr class="thead-ne">
+        <th>
+            <p>Category <b class="sort-icon" onclick="document.location.href = '@Url.Action("Manage2ndCate","Admin", new { idCate = Model.First().category_id, sortOrder = ViewBag.NameSort })'">&#8645</b></p>
+        </th>
+        <th>
+            <p>Inside of</p>
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr onclick="window.location.href = '@Url.Action("Manage3ndCate","Admin", new { id2nd = item.seccond_cate_id})'" class="row-item">
+            <td>
+                @Html.DisplayFor(modelItem => item.seccond_cate)
+                <p class="text-danger">@ViewBag.Empty</p>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.category1)
+            </td>
+            <td>
+                <a href="@Url.Action("Edit2ndCate","Admin", new { id = item.seccond_cate_id })" class="edit-del"><img src="~/Content/Images/icon/edit.png" class="my-icon" /> </a>
+                <a href="@Url.Action("Delete2ndCate","Admin", new { id = item.seccond_cate_id })" class="edit-del"><img src="~/Content/Images/icon/delete.png" class="my-icon" /></a>
+            </td>
+        </tr>
+    }
+
+</table>
+<a href="@Url.Action("ManageCategories", "Admin")" class="admin-btn-no" style="float: right;">&#8678 Back</a>
+<div class="page" style="display: inline;">
+    Page: @(Model.PageCount<Model.PageNumber?0:Model.PageNumber)/@Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Manage2ndCate", new { page, sortOrder = ViewBag.CurrentSort }))
+</div>

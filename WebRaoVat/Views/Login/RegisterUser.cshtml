@@ -1,0 +1,87 @@
+﻿@model WebRaoVat.Models.User
+
+@{
+    ViewBag.Title = "RegisterUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/GetImageToTagImg.js"></script>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="form-login bg-theme box-shadow col-md-6">
+            <p class="font-aqua title-form">CREATE AN ACCOUNT</p>
+            @Html.ValidationSummary(true, "", new { @class = "validation" })
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <p class="control-label" style="font-weight: bold">Username</p>
+                        </div>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.user_id, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.user_id, "", new { @class = "validation" })
+                            <p class="validation">@ViewBag.ErrorRegister</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <p class="control-label" style="font-weight: bold">Email</p>
+                        </div>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.email, "", new { @class = "validation" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <p class="control-label" style="font-weight: bold">Password</p>
+                        </div>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+                            @Html.ValidationMessageFor(model => model.password, "", new { @class = "validation" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <p class="control-label col-12">Confirm your password</p>
+                        <div class="col-md-12">
+                            <input class="form-control" placeholder="To make sure you get it!" type="password" name="ConfirmPass" id="ConfirmPass" />
+                            <p class="text-danger">@ViewBag.ErrorConfirm</p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <p class="control-label" style="font-weight: bold">Phone number</p>
+                        </div>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.phone, "", new { @class = "validation" })
+                        </div>
+                    </div>           
+                    <div class="form-group">
+                        <div class="control-label col-md-2">Avartar</div>
+                        <div class="col-md-12">
+                            <img src="~/Content/Images/avatar_default.jpg" height="200" width="200" id="previewImg" />
+                            <input type="file" name="UploadImage" id="UploadImage" onchange="ChangeImage(this, document.getElementById('previewImg'))" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-12">
+                    <input type="submit" value="Create" class="border-button btn-bgxanhnhat text-white" style="width:100%; margin-left: 0px;" />
+                </div>
+                <div class="col-lg-6">
+                    <a href="@Url.Action("LoginAccount","Login")" class="text-white" style="width:100%; margin-left: auto;">Back to Login page</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+
+}

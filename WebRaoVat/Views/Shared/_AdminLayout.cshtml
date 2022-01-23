@@ -1,0 +1,59 @@
+﻿@using WebRaoVat.Models;
+@using System.Data.Entity;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/adminPage.css" rel="stylesheet" />
+    <link href="~/Content/long_trinh.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/List-down.js"></script>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+@{
+    LoaPhatThanhEntities db = new LoaPhatThanhEntities();
+    User admin = (User)Session["Admin"];
+}
+<body>
+
+    <div class="nav-panel-left" style="margin: auto">
+        <div class="nav-panel">
+            <div class="text-cam font-inter home-name" onclick="document.location.href = '@Url.Action("Index","Admin")'">Loa Phát Thanh</div>
+            <img src="@admin.image" alt="profile" class="avatar" />
+            <p class="center-text name-user" onclick="showListDown()">@admin.user_id</p>
+            <div id="have-list-down">
+                <div class="list-down small-heading" onclick="window.location.href='@Url.Action("EditProfile","Login", new { @id = admin.user_id, @u = admin })'">Change infomation</div>
+                <div class="list-down small-heading" onclick="window.location.href='@Url.Action("ChangePasswordUser","Login", new { @id = admin.user_id })'">Change password</div>
+                <div class="list-down small-heading" onclick="window.location.href='@Url.Action("LogOutAdmin","Admin")'">Log out</div>
+            </div>
+            <div class="nav-heading" onclick="window.location.href='@Url.Action("ManageUser","Admin")'">Users</div>
+            <div class="nav-heading" onclick="window.location.href='@Url.Action("ManagePermission","Admin")'">Permissions</div>
+            <div class="nav-heading" onclick="window.location.href='@Url.Action("ManagePost","Admin")'">Post</div>
+            <div class="nav-heading" onclick="window.location.href='@Url.Action("ManageBrands","Admin")'">Brands</div>
+            <div class="nav-heading" onclick="window.location.href='@Url.Action("ManageCategories","Admin")'">Categories</div>
+            <div class="nav-heading" onclick="window.location.href='@Url.Action("ManageAtribute","Admin")'">Atributes</div>
+            <div class="nav-heading" onclick="window.location.href='@Url.Action("ManageProduct","Admin")'">Products</div>
+        </div>
+    </div>
+    <div class="container col-12">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-9">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,41 @@
+﻿@using WebRaoVat.Models
+@using PagedList.Mvc;
+@model PagedList.PagedList<Permission>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@{
+
+    ViewBag.Title = "Manage Permission";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="title-page">Manage Permission</h2>
+<div class="btn btn-info" onclick="document.location.href = '@Url.Action("CreatePermission","Admin")'">Create permission</div>
+<br />
+<br />
+
+<table class="table">
+    <tr class="thead-ne">
+        <th>
+            Permission
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr class="row-item">
+            <td>
+                @Html.DisplayFor(modelItem => item.permission1)
+            </td>
+            <td>
+                <a href="@Url.Action("EditPermission","Admin", new { id = item.permission_id })" class="edit-del"><img src="~/Content/Images/icon/edit.png" class="my-icon" /> </a>
+                <a href="@Url.Action("DeletePermission","Admin", new { id = item.permission_id })" class="edit-del"><img src="~/Content/Images/icon/delete.png" class="my-icon" /></a>
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="page" style="display: inline;">
+    Page: @(Model.PageCount<Model.PageNumber?0:Model.PageNumber)/@Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("ManagePermission", new { page = page }))
+</div>

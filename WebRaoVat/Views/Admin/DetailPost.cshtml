@@ -1,0 +1,135 @@
+﻿
+@model WebRaoVat.Models.Post
+@using WebRaoVat.Models;
+@{
+    ViewBag.Title = "Detail of Post";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    LoaPhatThanhEntities db = new LoaPhatThanhEntities();
+    int dem = 0;
+    List<Image> images = new List<Image>();
+    List<AbtributeAndValue> abtributes = new List<AbtributeAndValue>();
+    if (db.Images.AsNoTracking().Where(i => i.post_id == Model.post_id).ToList().Count() != 0)
+    {
+        images = db.Images.AsNoTracking().Where(i => i.post_id == Model.post_id).ToList();
+    }
+    else
+    {
+        images = null;
+    }
+    double rating = @Model.User.rate / @Model.User.rate_count;
+    if (db.AbtributeAndValues.AsNoTracking().Where(p => p.post_id == Model.post_id).ToList().Count() != 0)
+        abtributes = db.AbtributeAndValues.AsNoTracking().Where(p => p.post_id == Model.post_id).ToList();
+    else
+        abtributes = null;
+}
+
+<link href="~/Content/slideImage.css" rel="stylesheet" />
+<link href="~/Content/long_trinh.css" rel="stylesheet" />
+<div class="image-user">
+    <div class="row">
+        <div class="col-7" id="longSlideContainer">
+            @if (images != null)
+            {
+                foreach (var item in images)
+                {
+                    <div class="image-slide" style=" display: none;">
+                        <img src="@item.link" style="width: 100%; object-fit: contain;" />
+                    </div>
+                }
+                <a href="#longSlideContainer" id="next" class="changeSlide" onclick="plusSlides(1)">&#11166;</a>
+                <a href="#longSlideContainer" id="previous" class="changeSlide" onclick="plusSlides(-1)">&#11164;</a>
+            }
+            else
+            {
+                <h3>There are no image!</h3>
+            }
+        </div>
+        <script src="~/Scripts/slideImage.js"></script>
+        <div class="col-5">
+            <div class="card-user">
+                <div class="row">
+                    <div class="col-5">
+                        <img src="@Model.User.image" height="150" width="150" style="object-fit:contain; margin: auto;" />
+                    </div>
+                    <div class="col-5">
+                        <h3 style=" line-height: 200%;">@Model.user_id</h3>
+                        <p style=" line-height: 200%;">@rating / 5</p>
+                        <p style=" line-height: 200%;">@Model.User.email</p>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <a href="@Url.Action("ViewUser","User",new { @id = Model.user_id })" class="theme-btn btn-90-width noselect">View @Model.User.user_id</a>
+                </div>
+                <div class="row">
+                    <div class="light-theme-btn btn-90-width noselect" style="display: block;">@Model.User.phone</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-10">
+            <h3 class="title-post">@Model.title</h3>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <p class="date-posted">Date Posted: @Model.date_posted.ToShortDateString()</p>
+        </div>
+        <div class="col-7">
+            <p class="address">
+                Location:
+                <a href="#" class="address">@Model.Ward.Type @Model.Ward.Name</a> -
+                <a href="#" class="address">@Model.Ward.District.Type @Model.Ward.District.Name</a> -
+                <a href="#" class="address">@Model.Ward.District.Province.Type @Model.Ward.District.Province.Name</a>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-9">
+            <h4 class="price">Price: $@Model.price</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <p>Description of author:</p>
+            <p>@Model.content</p>
+        </div>
+    </div>
+    @if (abtributes != null)
+    {
+        <div class="container col-12">
+            <p class="font-18 font-inter" style="color: #203562">Attributes</p>
+            <hr />
+            @foreach (var item in abtributes)
+            {
+                if (dem % 4 == 0)
+                {
+                    @Html.Raw("<div class=\"row\" >")
+                }
+                <div class="col-md-3">
+                    <div class="atribute" onclick="">
+                        @item.Atribute.atribute_name: @item.value
+                    </div>
+                </div>
+                dem++;
+                if (dem == abtributes.Count())
+                {
+                    @Html.Raw("</div>")
+                }
+                else if (dem % 4 == 0)
+                {
+                    @Html.Raw("</div>")
+                }
+            }
+        </div>
+    }
+</div>
+<div class="footer-ask">
+    Approve this post?
+    <div class="admin-btn" style="display: inline-block" onclick="document.location.href='@Url.Action("ApprovedPost","Admin", new { id = Model.post_id })'">Yes</div>
+    <div class="admin-btn-no" style="display: inline-block" onclick="document.location.href='@Url.Action("DenyPost","Admin", new { id = Model.post_id })'">No</div>
+</div>

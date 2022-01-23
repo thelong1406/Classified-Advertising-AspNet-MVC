@@ -1,0 +1,516 @@
+﻿@using WebRaoVat.Models
+@{
+    ViewBag.Title = "PostSomething";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    User user = (User)Session["User"];
+    var post = (Post)ViewData["post"];
+    var product = (Product)ViewData["Product"];
+}
+<style>
+
+    label.error {
+        display: inline-block;
+        color: red;
+        width: 200px;
+    }
+</style>
+<div class="constant">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <form id="form1" name="form1">
+                <div class="form-group" id="Category-div">
+                    <label for="Category">Category</label>
+                    @Html.DropDownList("CategoryID", new SelectList(new string[] { }), new { @class = "form-control", @id = "CategoryID", @disabled = "disabled" })
+                </div>
+                <div class="form-group" id="Second-Category-div">
+                    <label for="Category">Category</label>
+                    @Html.DropDownList("Second_CategoryID", new SelectList(new string[] { }), "--Choose Category--", new { @class = "form-control", @id = "Second_CategoryID", @disabled = "disabled" })
+                </div>
+                @if (post.third_cate_id != null)
+                {
+                    <div class="form-group" id="Third-Category-div">
+                        <label for="Category">Category</label>
+                        @Html.DropDownList("Third_CategoryID", new SelectList(new string[] { }), "--Choose Category--", new { @class = "form-control", @id = "Third_CategoryID", @disabled = "disabled" })
+                    </div>
+                }
+
+                <div class="form-group" id="Brand-div">
+                    <label for="Brand">Brand</label>
+                    @Html.DropDownList("BrandID", new SelectList(new string[] { }), "--Choose Brand--", new { @class = "form-control", @id = "BrandID" })
+                </div>
+                <div class="form-group" id="Product-div">
+                    <label for="Product">Product</label>
+                    @Html.DropDownList("ProductID", new SelectList(new string[] { }), "--Choose Product--", new { @class = "form-control", @id = "ProductID" })
+                </div>
+                <div class="form-group" id="Province-div">
+                    <label for="Province">Province</label>
+                    @Html.DropDownList("ProvinceID", new SelectList(new string[] { }), new { @class = "form-control", @id = "ProvinceID", @disabled = "disabled" })
+                </div>
+                <div class="form-group" id="District-div">
+                    <label for="District">District</label>
+                    @Html.DropDownList("DistrictID", new SelectList(new string[] { }), "--Choose District--", new { @class = "form-control", @id = "DistrictID", @disabled = "disabled" })
+                </div>
+                <div class="form-group" id="Ward-div">
+                    <label for="Ward">Ward</label>
+                    @Html.DropDownList("WardID", new SelectList(new string[] { }), "--Choose Ward--", new { @class = "form-control", @id = "WardID", @disabled = "disabled" })
+                </div>
+                <div class="form-group" id="Seller-div">
+                    <label for="Seller">You're </label>
+                    @Html.DropDownList("SellerID", new SelectList(new string[] { }), new { @class = "form-control", @id = "SellerID", @disabled = "disabled" })
+                </div>
+                <div class="form-group" id="Price-div">
+                    <label for="Price">Price</label>
+                    @Html.TextBox("Price", "", new { @class = "form-control number-separator", @id = "PriceId", @type = "text", required = "required" })
+                </div>
+                <div class="form-group" id="Name-div">
+                    <label for="Name">Name</label>
+                    @Html.TextBox("Name", "", new { @class = "form-control", @id = "NameId", required = "required", @disabled = "disabled" })
+                </div>
+                <div class="form-group" id="Email-div">
+                    <label for="Email">Email</label>
+                    @Html.TextBox("Email", "", new { @class = "form-control", @id = "EmailId", @type = "email", required = "required", @disabled = "disabled" })
+                </div>
+                <div class="form-group" id="Title-div">
+                    <label for="Title" id="Title">Title</label>
+                    @Html.TextBox("Title", "", new { @class = "form-control", @id = "TitleId", required = "required" })
+                </div>
+                <div class="form-group" id="Description-div">
+                    <label for="Description">Description</label>
+                    @Html.TextArea("Description", "", new { @class = "form-control", @id = "DescriptionId", required = "required" })
+                </div>
+                <div id="PostAttribute"></div>
+                <div class="card">
+                    <input type="file" id="flImage" name="ImageUpload" onchange='UploadTempImage()' class="form-control">
+                    <label id="Image-error" class="error text-danger" for="ImageId" style="display:none">Thêm ít nhất 1 ảnh!</label>
+                    <div id="imageList"></div>
+                </div>
+
+                <div class="form-group" id="Post-div">
+                    <input type="submit" id="Post" value="Save changes" class="bg-theme text-white border-btn" style="margin:10px 0px 10px 0px; width:100%" />
+                </div>
+            </form>
+
+        </div>
+        <div class="col-md-2"></div>
+
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/easy-number-separator.js"></script>
+<script>
+    var item = {
+        post_id: @post.post_id,
+        title: "@post.title",
+        content: "@post.content",
+        date_posted: "@post.date_posted",
+        user_id: "",
+        price: @post.price,
+        is_hided: @post.is_hided.ToString().ToLower(),
+        category_id: @post.category_id,
+        seccond_cate_id: @post.seccond_cate_id,
+        third_cate_id: null,
+        is_approved: @post.is_approved.ToString().ToLower(),
+        is_seller: @post.is_seller.ToString().ToLower(),
+        ward_id: @post.ward_id,
+        product_id: @post.product_id,
+    };
+    var count_image = 0;
+    var item_attribute_id = [];
+    var item_attribute_value = [];
+    var count_attribute = 0;
+    var dong_id = 0;
+    var hang_id = 0;
+
+    item.third_cate_id = @ViewBag.thirdCateId
+    $('#Third_CategoryID').html('<option value="@ViewBag.thirdCateId">@ViewBag.ThirdName</option>');
+
+    console.log("@post.product_id");
+    console.log("@post.Product.id");
+    console.log("@post.Product.BrandSelect.brand_id");
+    console.log("@post.Product.BrandSelect.seccond_cate_id");
+
+    $("#NameId").val("@user.user_id");
+    $("#EmailId").val("@user.email");
+    $("#PriceId").val(item.price);
+    $("#TitleId").val(item.title);
+    $("#DescriptionId").val(item.content);
+
+    $('#CategoryID').html('<option value="@post.category_id">@post.Category.category1 </option>');
+    $('#Second_CategoryID').html('<option value="@post.seccond_cate_id">@post.SeccondCategory.seccond_cate</option>');
+    $('#ProvinceID').html('<option value="@post.Ward.District.ProvinceId">@post.Ward.District.Province.Name</option>');
+    $('#DistrictID').html('<option value="@post.Ward.DistrictID">@post.Ward.District.Name</option>');
+    $('#WardID').html('<option value="@post.ward_id">@post.Ward.Name</option>');
+
+    $.ajax({
+        url: "/Post/GetBrand",
+        type: "POST",
+        data: {
+            cateId: item.seccond_cate_id
+        },
+        dataType: "json",
+        success: function (response) {
+            if (response.status == true) {
+                var html = '<option value="">--Choose Brand--</option>"';
+                var data = response.data;
+                $.each(data, function (i, val) {
+                    html += '<option value="' + val.brand_id + '">' + val.brand1 + '</option>"'
+                });
+                $('#BrandID').html(html);
+                $('#BrandID').val("@product.BrandSelect.brand_id");
+            }
+        }
+    });
+
+    $.ajax({
+        url: "/Post/BrandSelect",
+        type: "POST",
+        dataType: "json",
+        data: {
+            brandId: "@product.BrandSelect.brand_id",
+            cateId: item.seccond_cate_id
+        },
+        success: function (response) {
+            if (response.status == true) {
+                var data = response.data;
+                var id;
+                $.each(data, function (i, val) {
+                    id = val.id
+                });
+                $.ajax({
+                    url: "/Post/LoadProduct",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        id: id,
+                    },
+                    success: function (response) {
+                        if (response.status == true) {
+                            $('#Product-div').css("display", "block");
+                            var html = '<option value="">--Choose Product--</option>"';
+                            var data = response.data;
+                            $.each(data, function (i, val) {
+                                html += '<option value="' + val.product_id + '">' + val.product1 + '</option>"'
+                            });
+                            $('#ProductID').html(html);
+                            $('#ProductID').val(item.product_id);
+                        }
+                    }
+                });
+            }
+        }
+    })
+
+    $("#BrandID").change(function () {
+        var brandid = $(this).val();
+        var id;
+        $.ajax({
+            url: "/Post/BrandSelect",
+            type: "POST",
+            dataType: "json",
+            data: {
+                brandId: brandid,
+                cateId: $("#Second_CategoryID").val()
+            },
+            success: function (response) {
+                if (response.status == true) {
+                    var data = response.data;
+                    $.each(data, function (i, val) {
+                        id = val.id
+                    });
+                    $.ajax({
+                        url: "/Post/LoadProduct",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            id: id,
+                        },
+                        success: function (response) {
+                            if (response.status == true) {
+                                $('#Product-div').css("display", "block");
+                                var html = '<option value="">--Choose Product--</option>"';
+                                var data = response.data;
+                                $.each(data, function (i, val) {
+                                    html += '<option value="' + val.product_id + '">' + val.product1 + '</option>"'
+                                });
+                                $('#ProductID').html(html);
+                            }
+                        }
+                    });
+                }
+            }
+        })
+    });
+
+    $.ajax({
+        url: "/Post/EditAttribute",
+        type: "POST",
+        dataType: "json",
+        data: { id: item.post_id },
+        success: function (response) {
+            if (response.status == true) {
+                var data = response.data;
+                count_attribute = 0;
+                dong_id = 0;
+                hang_id = 0;
+                item_attribute_id = [];
+                $.each(data, function (i, val) {
+
+                    $("#PostAttribute").append('<div class="form-group" id="Attribute' + i + '-div">' +
+                        '<label for="' + val.atribute_name + '" id="' + val.atribute_id + '-label">' + val.atribute_name + '</label>' +
+                        '<input class="form-control" id="' + val.atribute_id + '" name="' + val.atribute_name + '" type="text" value="' + val.value+'">' +
+                        '</div>');
+                    count_attribute++;
+
+                    item_attribute_id.push(val.atribute_id);
+                    if (val.atribute_name.indexOf("Dòng") != -1) {
+                        dong_id = val.atribute_id;
+                    }
+                    if (val.atribute_name.indexOf("Hãng") != -1) {
+                        hang_id = val.atribute_id;
+                    }
+                });
+
+            }
+        }
+    })
+
+    $("#ProductID").change(function () {
+        var Hang = $("#BrandID option:selected").text();
+        $('#' + hang_id + '').val(Hang);
+
+        var Dong = $("#ProductID option:selected").text();
+        $('#' + dong_id + '').val(Dong);
+    });
+
+    $(document).ready(function () {
+        var html = '<option value="">--Choose Type--</option>"';
+        html += '<option value="' + true + '"> Seller </option>"'
+        html += '<option value="' + false + '"> Buyer </option>"'
+        $('#SellerID').html(html);
+        $('#SellerID').val("@post.is_seller.ToString().ToLower()");
+    });
+
+    $.ajax({
+        url: "/Post/SaveToTmpFolder",
+        type: "POST",
+        data: {
+            id: item.post_id
+        },
+        dataType: "json",
+        success: function (response) {
+            if (response.status == true) {
+                var data = response.data;
+                $.each(data, function (i, val) {
+                    var my_path = "/Content/Images/tmp/" + val;
+                    $("#imageList").append('<div style="float:left"><img src="' + my_path + '" width="150" height="150"/><a href="#" class="btn-delImage"><i class="fa fa-times" apostia-hidden="true"></i></a></div>')
+                    count_image++;
+                    $(".btn-delImage").click(function () {
+                        var text = $(this).parent().children().prop("src");
+                        var sub = text.substr(text.indexOf('C'), text.length);
+                        $(this).parent().remove();
+                        console.log(sub);
+                        $.ajax({
+                            type: "POST",
+                            url: "/Post/RemoveFile",
+                            dataType: "json",
+                            data: {
+                                url: sub
+                            },
+                            success: function (response2) {
+                                if (response2 != null) {
+                                    console.log(response2);
+                                }
+                            },
+                            error: function () {
+                                alert("Whoops something went wrong 2!");
+                            }
+                        });
+                    })
+                });
+            }
+        }
+    });
+
+    function UploadTempImage() {
+        var formData = new FormData();
+        formData.append('file', $('#flImage')[0].files[0]);
+        $.ajax({
+            type: "POST",
+            url: "/Post/SaveToTemp",
+            data: formData,
+            success: function (response) {
+                if (response != null) {
+                    var my_path = "/Content/Images/tmp/" + response;
+                    $("#imageList").append('<div style="float:left"><img src="' + my_path + '" width="150" height="150"/><a href="#" class="btn-delImage"><i class="fa fa-times" aria-hidden="true"></i></a></div>')
+                    count_image++;
+                    $(".btn-delImage").click(function () {
+                        var text = $(this).parent().children().prop("src");
+                        var sub = text.substr(text.indexOf('C'), text.length);
+                        $(this).parent().remove();
+                        count_image--;
+                        console.log(sub);
+                        $.ajax({
+                            type: "POST",
+                            url: "/Post/RemoveFile",
+                            dataType: "json",
+                            data: {
+                                url: sub
+                            },
+                            success: function (response2) {
+                                if (response2 != null) {
+                                    console.log(response2);
+                                }
+                            },
+                            error: function () {
+                                alert("Whoops something went wrong 2!");
+                            }
+                        });
+                    })
+                }
+            },
+            processData: false,
+            contentType: false,
+            error: function () {
+                alert("Whoops something went wrong!");
+            }
+        });
+    }
+
+    $.validator.setDefaults({
+        ignore: [],
+        // any other default options and/or rules
+    });
+
+    var form = $("#form1");
+    form.validate({
+        rules: {
+            CategoryID: {
+                required: true
+            },
+            Second_CatgoryID: {
+                required: function (element) {
+                    return $('#Second-Category-div').css("display") == "block";
+                }
+            },
+            Third_CategoryID: {
+                required: function (element) {
+                    return $('#Third-Category-div').css("display") == "block";
+                }
+            },
+            BrandID: {
+                required: function (element) {
+                    return $('#Brand-div').css("display") == "block";
+                }
+            },
+            ProductID: {
+                required: function (element) {
+                    return $('#Product-div').css("display") == "block";
+                }
+            },
+            ProvinceID: {
+                required: true
+            },
+            DistrictID: {
+                required: function (element) {
+                    return $('#District-div').css("display") == "block";
+                }
+            },
+            WardID: {
+                required: function (element) {
+                    return $('#Ward-div').css("dithird_cateplay") == "block";
+                }
+            },
+            flImage: {
+                required: function (element) {
+                    return count_image == 0;
+                }
+            },
+            SellerID: {
+                required: true
+            }
+        }
+    });
+    $("#Post").click(function (e) {
+        //Get attribute for post
+        if (!form.valid()) {
+            $('#flImage-error').text("Add at least 1 photo!");
+            $('#flImage-error').addClass('text-danger');
+            return false;
+        }
+
+        $.each(item_attribute_id, function (i, val) {
+            var tmp = $("#" + val).val();
+            if (tmp == null) {
+                item_attribute_value.push("");
+            } else {
+                item_attribute_value.push(tmp);
+            }
+        });
+
+        var myId = JSON.stringify(item_attribute_id);
+        var myValue = JSON.stringify(item_attribute_value);
+
+        item.category_id = $('#CategoryID').val();
+        item.seccond_cate_id = $('#Second_CategoryID').val();
+        item.third_cate_id = $('#Third_CategoryID').val();
+        item.ward_id = $('#WardID').val();
+        item.is_seller = $('#SellerID').val();
+        item.product_id = $('#ProductID').val();
+        item.title = $("#TitleId").val();
+        item.content = $("#DescriptionId").val();
+        var tmpprice = $("#PriceId").val();
+        tmpprice = tmpprice.replace(/\,/g, ''); 
+        tmpprice = parseInt(tmpprice, 10);
+        item.price = tmpprice;
+        item.user_id = $("#NameId").val();
+
+        $.ajax({
+            url: "/Post/UpdatePost",
+            type: "POST",
+            data: item,
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (result) {
+                console.log(result.result);
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: '/Post/SaveEditToMainFolder',
+            data: { id: item.post_id },
+            success: function (response) {
+                if (response != null) {
+                    console.log(response);
+                }
+            },
+        });
+
+        $.ajax({
+            url: "/Post/Update_Post_Attribute",
+            type: "POST",
+            data: {
+                post_id: item.post_id,
+                myId: myId,
+                myValue: myValue
+            },
+            dataType: "json",
+            crossDomain: true,
+
+            success: function (data) {
+                window.location.href = data;
+            },
+            error: function (result) {
+                console.log(result.result);
+            }
+        });
+
+    });
+</script>

@@ -1,0 +1,282 @@
+﻿@model WebRaoVat.Models.Post
+@using WebRaoVat.Models;
+@using WebRaoVat.Controllers;
+@{
+    ViewBag.Title = "Post Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    LoaPhatThanhEntities db = new LoaPhatThanhEntities();
+    User currentUser = new User();
+    if (Session["User"] != null)
+    {
+        currentUser = (User)Session["User"];
+        if (db.Users.Where(u => u.user_id == currentUser.user_id && u.password == currentUser.password).FirstOrDefault() == null)
+        { currentUser = null; }
+    }
+    else
+    { currentUser = null; }
+    int dem = 0;
+    List<Image> images = new List<Image>();
+    List<AbtributeAndValue> abtributes = new List<AbtributeAndValue>();
+    if (db.Images.AsNoTracking().Where(i => i.post_id == Model.post_id).ToList().Count() != 0)
+    {
+        images = db.Images.AsNoTracking().Where(i => i.post_id == Model.post_id).ToList();
+    }
+    else
+    {
+        images = null;
+    }
+    double rating = @Model.User.rate / @Model.User.rate_count;
+    if (db.AbtributeAndValues.AsNoTracking().Where(p => p.post_id == Model.post_id).ToList().Count() != 0)
+        abtributes = db.AbtributeAndValues.AsNoTracking().Where(p => p.post_id == Model.post_id).ToList();
+    else
+        abtributes = null;
+}
+
+@{
+    var save = (int)ViewData["Save"];
+}
+
+<link href="~/Content/slideImage.css" rel="stylesheet" />
+<script src="~/Scripts/CopyCurrentURL.js"></script>
+<link href="~/Content/long_trinh.css" rel="stylesheet" />
+<div class="image-user">
+    <div class="row">
+        <div class="col-7" id="longSlideContainer">
+            @if (images != null)
+            {
+                foreach (var item in images)
+                {
+                    <div class="image-slide" style=" display: none;">
+                        <img src="@item.link" style="width: 100%; height: 90vh; object-fit: contain; object-position:center;" />
+                    </div>
+                }
+                <a href="#longSlideContainer" id="next" class="changeSlide" onclick="plusSlides(1)">&#11166;</a>
+                <a href="#longSlideContainer" id="previous" class="changeSlide" onclick="plusSlides(-1)">&#11164;</a>
+            }
+            else
+            {
+                <h3>There are no image!</h3>
+            }
+        </div>
+        <script src="~/Scripts/slideImage.js"></script>
+        <div class="col-5">
+            <div class="card-user">
+                <div class="row">
+                    <div class="col-5">
+                        <img src="@Model.User.image" height="150" width="150" style="object-fit:contain; margin: auto;" />
+                    </div>
+                    <div class="col-5">
+                        <h3 style=" line-height: 200%;">@Model.user_id</h3>
+                        <p style=" line-height: 200%;">Rating: @rating / 5</p>
+                        <p style=" line-height: 200%;">@Model.User.email</p>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <a href="@Url.Action("ViewUser","User",new { @id = Model.user_id })" class="theme-btn btn-90-width noselect">View @Model.User.user_id</a>
+                </div>
+                <div class="row">
+                    <div class="light-theme-btn btn-90-width noselect" style="display: block;" onclick="seePhoneNumber()">
+                        <span id="yet" style="display: block;">Click to see phone number</span>
+                        <span id="already" style="display: none;">@Model.User.phone</span>
+                    </div>
+                    <script>
+                        function seePhoneNumber() {
+                            document.getElementById('yet').style.display = 'none';
+                            document.getElementById('already').style.display = 'block';
+                        }
+                    </script>
+                </div>
+                <div class="row">
+                    @if (Session["User"] != null)
+                    {
+                        Boolean check = false;
+                        User user = (User)Session["User"];
+                        if (user.user_id != Model.user_id)
+                        {
+                            foreach (Follow u in @Model.User.Follows)
+                            {
+                                if (u.user_id == user.user_id)
+                                {
+                                    check = true;
+                                    <div class="light-theme-btn btn-90-width noselect" onclick="document.location.href='@Url.Action("UnfollowUser","User", new { @that_user_id = Model.user_id })'">Unfollow @Model.user_id</div>
+                                    break;
+                                }
+                            }
+                            if (check == false)
+                            {
+                                <div class="light-theme-btn btn-90-width noselect" onclick="document.location.href='@Url.Action("FollowUser","User", new { @that_user_id = Model.user_id })'">Follow @Model.user_id</div>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <div class="light-theme-btn btn-90-width noselect" onclick="document.location.href='@Url.Action("FollowUser","User", new { @that_user_id = Model.user_id })'">Follow @Model.user_id</div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-10">
+            <h3 class="title-post">@Model.title</h3>
+            <hr />
+        </div>
+        <div class="col-2">
+            @if (Session["User"] != null)
+            {
+                if (currentUser.user_id != Model.user_id)
+                {
+                    if (save == 0)
+                    {
+                        <div onclick="document.location.href='@Url.Action("SavePost","Post", new { @id = Model.post_id,@userid=currentUser.user_id, @urlstr = Request.Url.ToString() })'" class="bg-hong theme-btn noselect">Save Post</div>
+                    }
+                    else
+                    {
+                        <div onclick="document.location.href='@Url.Action("SavePost","Post", new { @id = Model.post_id,@userid=currentUser.user_id, @urlstr = Request.Url.ToString() })'" class="light-theme-btn noselect">Unsave</div>
+                    }
+                }
+                else
+                {
+
+                    <div onclick="document.location.href='@Url.Action("EditPost", "Post", new { @id = Model.post_id })'" class="light-theme-btn noselect">Edit Post</div>
+                }
+            }
+            else
+            {
+                <div onclick="document.location.href='@Url.Action("LoginAccount","Login",new {@returnUrl=Context.Request.Url })'" class="bg-hong theme-btn noselect">Save Post</div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <p class="date-posted">Date Posted: @Model.date_posted.ToLongDateString() at @Model.date_posted.ToLongTimeString()</p>
+        </div>
+        <div class="col-7">
+            <p class="address">
+                Location:
+                <a href="@Url.Action("Category_Post","Home",new { @ward = Model.ward_id })" class="address">@Model.Ward.Type @Model.Ward.Name</a> -
+                <a href="@Url.Action("Category_Post","Home",new { @district = Model.Ward.DistrictID })" class="address">@Model.Ward.District.Type @Model.Ward.District.Name</a> -
+                <a href="@Url.Action("Category_Post","Home",new { @province = Model.Ward.District.ProvinceId })" class="address">@Model.Ward.District.Province.Type @Model.Ward.District.Province.Name</a>
+            </p>
+        </div>
+        <div class="col-2">
+            <div onclick="CopyCurrentURL()" class="light-theme-btn noselect" style="margin-top: 0;">Share</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-9">
+            <h4 class="price">Price: $@Html.DisplayFor(item => item.price)</h4>
+        </div>
+        <div class="col-3">
+            @if (@Model.product_id != null)
+            {
+                if (Session["User"] != null)
+                {
+                    currentUser = (User)Session["User"];
+                    if (currentUser.user_id != Model.user_id)
+                    {
+                        bool check = (db.Dealeds.Where(d => d.user_id == currentUser.user_id && d.post_id == Model.post_id && (d.is_pending == true || d.is_delivering == true)).FirstOrDefault() != null);
+                        if (check)
+                        {
+                            <div class="theme-btn bg-xanhla noselect" style="margin-top: 1vw; display: BLOCK;" id="done-btn">Wait for reply!</div>
+                        }
+                        else
+                        {
+                            <div class="theme-btn bg-xanhla noselect" style="margin-top: 1vw;" id="delivery-btn" onclick="">Delivery to me!</div>
+                        }
+                    }
+                }
+                else
+                {
+                    if (currentUser == null || db.Dealeds.Where(d => d.user_id == currentUser.user_id && d.post_id == Model.post_id && (d.is_pending == false || d.is_delivering == false)).FirstOrDefault() == null)
+                    {
+                        <div class="theme-btn bg-xanhla noselect" style="margin-top: 1vw;" id="delivery-btn" onclick="">Delivery to me!</div>
+                    }
+                }
+
+
+            }
+        </div>
+        <script src="~/Scripts/closePopup.js"></script>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <p>Description of author:</p>
+            <p>@Model.content</p>
+        </div>
+    </div>
+    @if (abtributes != null)
+    {
+        <div class="container col-12">
+            <p class="font-18 font-inter" style="color: #203562">Attributes</p>
+            <hr />
+            @foreach (var item in abtributes)
+            {
+                if (dem % 4 == 0)
+                {
+                    @Html.Raw("<div class=\"row\" >")
+                }
+                <div class="col-md-3">
+                    <div class="atribute" onclick="">
+                        @item.Atribute.atribute_name: @item.value
+                    </div>
+                </div>
+                dem++;
+                if (dem == abtributes.Count())
+                {
+                    @Html.Raw("</div>")
+                }
+                else if (dem % 4 == 0)
+                {
+                    @Html.Raw("</div>")
+                }
+            }
+        </div>
+    }
+</div>
+@if (Model.product_id != null)
+{
+    Product product = db.Products.AsNoTracking().Where(m => m.product_id == Model.product_id).FirstOrDefault();
+    var brand = product.BrandSelect.Brand.brand1;
+    var name = product.product1;
+
+    <div id="popup">
+        <div id="close" onclick="closePopup()">&#x2715;</div>
+        <div class="row" style="position: relative;">
+            <div class="col-3">
+                <img src="~/Content/Images/icon/clock.png" style="object-fit: contain; height: 200px;" />
+            </div>
+            <div class="col-9" style="margin-top: auto; margin-bottom: auto; line-height: 200%;">
+                <h3>
+                    Do you want to get this <br /><b style="color: #fa4659;">@brand  @name</b>
+                </h3>
+                @using (Html.BeginForm("RequestDelivery", "Deal", new { postID = Model.post_id, @author = Model.user_id, brand_pro = Model.Product.BrandSelect.Brand.brand1 + Model.Product.product1 }, FormMethod.Post, null))
+                {
+                    <p style="line-height: 200%;">If you want, <br />Please Input your address for @Model.user_id delivery to:</p>
+                    <p>
+                        @Html.TextBox("address", ViewBag.CurrentFilter as string, new { @class = "my-search", @placeholder = "input your address here" })
+                    </p>
+                    <p style="line-height: 200%;">
+                        We will anoun to @Model.user_id!<br />
+                        All you do is waiting!
+                    </p>
+                    <div class="row">
+                        <div class="col-6">
+                            <input class="theme-btn bg-hong noselect" value="Ok, Send" type="submit" />
+                        </div>
+                        <div class="col-6">
+                            <div class="light-theme-btn noselect" onclick="closePopup()">No</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+

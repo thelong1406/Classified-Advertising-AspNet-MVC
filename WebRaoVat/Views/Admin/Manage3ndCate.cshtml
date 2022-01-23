@@ -1,0 +1,55 @@
+﻿@using WebRaoVat.Models
+@using PagedList.Mvc;
+@model PagedList.PagedList<ThirdCategory>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Manage Sub Category";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h2 class="title-page">Manage Sub Category</h2>
+<div class="btn btn-info" onclick="document.location.href = '@Url.Action("Create3rdCate", "Admin")'">Create new sub category</div>
+<br />
+<br />
+
+<table class="table">
+    <tr class="thead-ne">
+        <th>
+            <p>Sub Category <b class="sort-icon" onclick="document.location.href = '@Url.Action("Manage3ndCate", "Admin", new { id2nd = Model.First().seccond_cate_id_1, sortOrder = ViewBag.NameSort })'">&#8645</b></p>
+        </th>
+        <th>
+            <p>Of Category</p>
+        </th>
+        <th>
+            <p>Of Main Category</p>
+        </th>
+        <th>
+
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr class="row-item">
+            <td>
+                @Html.DisplayFor(modelItem => item.third_cate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SeccondCategory.seccond_cate)
+            </td>
+            <td onclick="window.location.href = '@Url.Action("Manage2ndCate", "Admin", new { idcate = item.SeccondCategory.Category.category_id })'" class="pointer-event">
+                @Html.DisplayFor(modelItem => item.SeccondCategory.Category.category1)
+            </td>
+            <td>
+                <a href="@Url.Action("Edit3rdCate", "Admin", new { id = item.third_cate_id })" class="edit-del"><img src="~/Content/Images/icon/edit.png" class="my-icon" /> </a>
+                <a href="@Url.Action("Delete3rdCate", "Admin", new { id = item.third_cate_id })" class="edit-del"><img src="~/Content/Images/icon/delete.png" class="my-icon" /></a>
+            </td>
+        </tr>
+    }
+
+</table>
+<a href="@Url.Action("Manage2ndCate", "Admin", new { idCate = Model.First().SeccondCategory.Category.category_id })" class="admin-btn-no" style="float: right;">&#8678 Back</a>
+<div class="page" style="display: inline;">
+    Page: @(Model.PageCount<Model.PageNumber?0:Model.PageNumber)/@Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Manage3ndCate", new { page, sortOrder = ViewBag.CurrentSort }))
+</div>

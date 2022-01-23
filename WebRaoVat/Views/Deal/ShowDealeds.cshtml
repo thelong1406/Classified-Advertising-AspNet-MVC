@@ -1,0 +1,69 @@
+﻿@model IEnumerable<WebRaoVat.Models.Dealed>
+@using WebRaoVat.Models;
+@{ LoaPhatThanhEntities db = new LoaPhatThanhEntities();
+}
+<link href="~/Content/long_trinh.css" rel="stylesheet" />
+<link href="~/Content/rating.css" rel="stylesheet" />
+<script src="~/Scripts/rating.js"></script>
+<div class="container deal-deli">
+    @foreach (var item in Model)
+    {
+        Product product = db.Products.AsNoTracking().Where(m => m.product_id == item.Post.product_id).FirstOrDefault();
+        var brand = product.BrandSelect.Brand.brand1;
+        var name = product.product1;
+        <div class="row deal-item">
+            <div class="col-md-3">
+                <img src="@item.Post.User.image" class="deal-image" onclick="document.location.href = '@Url.Action("ViewUser","User", new { id = item.Post.user_id })'" />
+            </div>
+            <div class="col-md-7 follow-noti" onclick="document.location.href = '@Url.Action("PostDetail","Post", new { id = item.post_id })'">
+                <h4 class="noti-title">Product: @brand @name</h4>
+                <p class="noti-price">Price: @item.Post.price</p>
+                <p class="noti-content">Dealed in: @item.deal_date.ToLongDateString() at @item.deal_date.ToShortTimeString() </p>
+                <p class="noti-content">Delivering from: @item.Post.Ward.Type @item.Post.Ward.Name - @item.Post.Ward.District.Type @item.Post.Ward.District.Name - @item.Post.Ward.District.Province.Type @item.Post.Ward.District.Province.Name</p>
+            </div>
+            @{ var check = db.RateUsers.AsNoTracking().Where(r => r.who_rate_id == item.user_id && r.who_be_rated_id == item.Post.user_id).FirstOrDefault();}
+            @if (check == null)
+            {
+                <div class="col-md-2">
+                    <div class="theme-btn done-deal noselect" onclick="openRating()">Rate @item.Post.user_id</div>
+                </div>
+                using (Html.BeginForm("RatingUser", "Rating", new { userRate = item.user_id, ratedUser = item.Post.user_id }, FormMethod.Post, null))
+                {
+                    <div id="rating-panel">
+                        <div class="noti-title" style="font-size: 1.3rem; text-align: center;">
+                            Rate @item.Post.user_id
+                        </div>
+                        <div class="rating">
+                            <div class="row">
+                                <div class="rate-area">
+                                    <input type="radio" id="5-star" name="rating" value="5" onclick="showRateButton()" />
+                                    <label for="5-star">5 stars</label>
+                                    <input type="radio" id="4-star" name="rating" value="4" onclick="showRateButton()"/>
+                                    <label for="4-star">4 stars</label>
+                                    <input type="radio" id="3-star" name="rating" value="3" onclick="showRateButton()"/>
+                                    <label for="3-star">3 stars</label>
+                                    <input type="radio" id="2-star" name="rating" value="2" onclick="showRateButton()"/>
+                                    <label for="2-star">2 stars</label>
+                                    <input type="radio" id="1-star" name="rating" value="1" onclick="showRateButton()"/>
+                                    <label for="1-star">1 star</label>
+                                </div>
+                                <br />
+                                <span id="spnError" class="error" style="display: none">Please select a Fruit.</span>
+                            </div>
+                            @Html.TextArea("comment","",new { @class = "my-search", rows ="5", maxlength = "100" })
+                            <div class="row">
+                                <div class="col-6" id="container">
+
+                                </div>
+                                <div class="col-6">
+                                    <div class="light-theme-btn noselect" onclick="closeRating()">Cancel</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    }
+</div>
+

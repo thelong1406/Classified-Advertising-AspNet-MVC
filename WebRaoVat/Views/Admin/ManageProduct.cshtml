@@ -1,0 +1,65 @@
+﻿@using WebRaoVat.Models;
+@using PagedList.Mvc;
+@model PagedList.PagedList<Product>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Manage Products";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="title-page">Manage Products</h2>
+<div class="btn btn-info" onclick="document.location.href = '@Url.Action("CreateProduct","Admin")'">Create new product</div>
+<br />
+<br />
+@using (Html.BeginForm("ManageProduct", "Admin", FormMethod.Get))
+{
+    <p>
+        Find by product, category or brand: @Html.TextBox("searchStr", ViewBag.CurrentFilter as string, new { @class = "my-search", @placeholder = "product, category or brand" })
+    </p><input type="submit" value="Search" class="my-action-admin" />
+}
+
+<table class="table col-lg-12">
+    <tr class="thead-ne">
+        <th>
+            <p>Product <b class="sort-icon" onclick="document.location.href = '@Url.Action("ManageProduct","Admin", new { sortOrder = ViewBag.NameSort, currentFilter = ViewBag.CurrentFilter})'">&#8645</b></p>
+        </th>
+        <th>
+            <p>Brand's Logo</p>
+        </th>
+        <th>
+            <p>Brand</p>
+        </th>
+        <th>
+            <p>Category</p>
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr class="row-item">
+            <td>
+                @Html.DisplayFor(modelItem => item.product1)
+            </td>
+            <td>
+                <img src="@item.BrandSelect.Brand.logo" width="60" height="60" style="object-fit: contain" onclick="window.location.href = '@Url.Action("ManageProduct", "Admin", new { sortOrder = ViewBag.CurrentSort,  searchStr = item.BrandSelect.Brand.brand1})'" />
+            </td>
+            <td onclick="window.location.href = '@Url.Action("ManageProduct", "Admin", new { sortOrder = ViewBag.CurrentSort,  searchStr = item.BrandSelect.Brand.brand1})'">
+                @Html.DisplayFor(modelItem => item.BrandSelect.Brand.brand1)
+            </td>
+            <td onclick="window.location.href = '@Url.Action("ManageProduct", "Admin", new { sortOrder = ViewBag.CurrentSort,  searchStr = item.BrandSelect.SeccondCategory.seccond_cate})'">
+                @Html.DisplayFor(modelItem => item.BrandSelect.SeccondCategory.seccond_cate)
+            </td>
+            <td>
+                <a href="@Url.Action("EditProduct","Admin", new { id = item.product_id })" class="edit-del"><img src="~/Content/Images/icon/edit.png" class="my-icon" /> </a>
+                <a href="@Url.Action("DeleteProduct","Admin", new { id = item.product_id })" class="edit-del"><img src="~/Content/Images/icon/delete.png" class="my-icon" /></a>
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="page" style="display: inline;">
+    Page: @(Model.PageCount<Model.PageNumber?0:Model.PageNumber)/@Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("ManageProduct", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div>

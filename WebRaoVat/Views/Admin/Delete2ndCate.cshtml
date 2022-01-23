@@ -1,0 +1,21 @@
+﻿@model WebRaoVat.Models.SeccondCategory
+@{
+    ViewBag.Title = "Delete Category";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div>
+    <div class="col-6" style="text-align: center; padding: 15px; font-size: 18pt;">
+        <h2 class="title-page">Delete Category: <br />@Model.seccond_cate?</h2>
+        <div>
+            Main Category: @Html.DisplayFor(model => model.Category.category1)
+        </div>
+        <br />
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <a href="@Url.Action("Manage2ndCate","Admin", new { @idCate = Model.category_id })" class="admin-btn-no">&#8678 Manage page</a>
+            <input type="submit" value="Delete!" class="admin-btn" style="float:none;" />
+        }
+    </div>
+</div>
+

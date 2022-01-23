@@ -1,0 +1,71 @@
+﻿@using WebRaoVat.Models
+@using PagedList.Mvc;
+@model PagedList.PagedList<WebRaoVat.Models.User>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Manage Users";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="title-page">Manage Users</h2>
+
+<div class="btn btn-info" onclick="document.location.href = '@Url.Action("CreateUser","Admin")'">Create new user</div>
+<br />
+<br />
+@using (Html.BeginForm("ManageUser","Admin", FormMethod.Get ))
+{
+    <p>
+        Find by username or email: @Html.TextBox("searchStr", ViewBag.CurrentFilter as string, new { @class = "my-search", @placeholder = "input username or email" })        
+    </p>
+    <input type="submit" value="Search" class="my-action-admin" />
+}
+<table class="table">
+    <tr class="thead-ne">
+        <th>
+            <div>Username <b class="sort-icon" onclick="document.location.href = '@Url.Action("ManageUser","Admin", new { sortOrder = ViewBag.NameSort, currentFilter = ViewBag.CurrentFilter})'">&#8645</b></div>
+        </th>
+        <th>
+            <div>Password</div>
+        </th>
+        <th>
+            <div>Phone</div>
+        </th>
+        <th>
+            <div>Email</div>
+        </th>
+        <th>
+            <div>Date Join<b class="sort-icon" onclick="document.location.href = '@Url.Action("ManageUser","Admin", new { sortOrder = ViewBag.DateSort, currentFilter = ViewBag.CurrentFilter})'">&#8645</b> </div>
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr class="row-item">
+            <td>
+                @Html.DisplayFor(modelItem => item.user_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.date_join)
+            </td>
+            <td>
+                <a href="@Url.Action("EditUser","Admin", new { id = item.user_id })" class="edit-del"><img src="~/Content/Images/icon/edit.png" class="my-icon" /> </a>
+                <a href="@Url.Action("DeleteUser","Admin", new { id = item.user_id })" class="edit-del"><img src="~/Content/Images/icon/delete.png" class="my-icon" /></a>
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="page" style="display: inline;">
+    Page: @(Model.PageCount<Model.PageNumber?0:Model.PageNumber)/@Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("ManageUser", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div>

@@ -1,0 +1,22 @@
+﻿@model WebRaoVat.Models.Category
+
+@{
+    ViewBag.Title = "Delete Main Category";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div>
+    <div class="col-6" style="text-align: center; padding: 15px; font-size: 18pt;">
+        <h2 class="title-page">Delete Main Category: <br />@Model.category1?</h2>
+        <p>This action will delete this model child</p>
+        <div>
+            <img src="@Url.Content(Model.image)" height="200" width="200" id="previewImg" />
+        </div>
+        <br />
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <a href="@Url.Action("ManageCategories","Admin")" class="admin-btn-no">&#8678 Manage page</a>
+            <input type="submit" value="Delete!" class="admin-btn" style="float:none;" />
+        }
+    </div>
+</div>

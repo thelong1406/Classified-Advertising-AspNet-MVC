@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Forgot Password";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/long_trinh.css" rel="stylesheet" />
+<div id="time-out" class="font-inter">
+    <h1 class="text-cam">An email have been sent to your email address!</h1>
+    <h4>Please <a href="gmai.com">check your email</a> and click to the link to reset your password!</h4>
+    <div id="count-area">
+
+    </div>   
+</div>
+<script>
+    var timeout = setTimeout(function () {
+        var counter = 10;
+        $(document).ready(function () {
+            $('#count-area').append('<p>You will be redirected to homepage in: <span id="count"></span></p>');
+        });
+        setInterval(function () {
+            document.getElementById("count").innerHTML = counter + "s";
+            counter--;
+            if (counter === 0) {
+                document.location.href = "../";
+            }
+        }, 1000);
+    }, 1000);
+</script>

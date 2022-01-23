@@ -1,0 +1,297 @@
+﻿
+@{
+    var cate_id = (int)ViewData["cate_id"];
+    var second_cateid = (int)ViewData["second_cate_id"];
+    var third_cateid = (int)ViewData["third_cate_id"];
+    var province = (int)ViewData["provinceid"];
+    var district = (int)ViewData["districtid"];
+    var ward = (int)ViewData["wardid"];
+    var sortOrder = (int)ViewData["sortOrder"];
+    var search = (string)ViewData["search"];
+}
+
+<form>
+    <div class="form-row">
+        <div class="col">
+            @Html.DropDownList("CategoryID", new SelectList(new string[] { }), "Choose Category", new { @class = "form-control", @id = "CategoryID" })
+        </div>
+        <div class="col" id="Second-Category-div" style="display:none">
+            @Html.DropDownList("Second_CategoryID", new SelectList(new string[] { }), "Choose Category", new { @class = "form-control", @id = "Second_CategoryID" })
+        </div>
+        <div class="col" id="Third-Category-div" style="display:none">
+            @Html.DropDownList("Third_CategoryID", new SelectList(new string[] { }), "Choose Category", new { @class = "form-control", @id = "Third_CategoryID" })
+        </div>
+        <div class="col">
+            @Html.DropDownList("ProvinceID", new SelectList(new string[] { }), "Choose Province", new { @class = "form-control", @id = "ProvinceID" })
+        </div>
+        <div class="col" id="District-div" style="display:none">
+            @Html.DropDownList("DistrictID", new SelectList(new string[] { }), "Choose District", new { @class = "form-control", @id = "DistrictID" })
+        </div>
+        <div class="col" id="Ward-div" style="display:none">
+            @Html.DropDownList("WardID", new SelectList(new string[] { }), "Choose Ward", new { @class = "form-control", @id = "WardID" })
+        </div>
+        <div class="col">
+            @Html.DropDownList("OrderID", new SelectList(new string[] { }), "Sort By", new { @class = "form-control", @id = "OrderID" })
+        </div>
+    </div>
+
+</form>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script>
+    var category_id = @cate_id;
+    var second_cate_id = @second_cateid;
+    var third_cate_id = @third_cateid;
+    var province = @province;
+    var district = @district;
+    var ward = @ward;
+    var sortOrder = @sortOrder;
+    var search = "@search";
+
+    var url = window.location.origin;
+
+    $.ajax({
+        url: "/Post/Category",
+        type: "POST",
+        dataType: "json",
+        success: function (response) {
+            if (response.status == true) {
+                var html = '<option value="">Choose Category</option>"';
+                var data = response.data;
+                $.each(data, function (i, val) {
+                    html += '<option value="' + val.category_id + '">' + val.category1 + '</option>"'
+                });
+                $('#CategoryID').html(html);
+                if (category_id != 0) {
+                    $('#CategoryID').val(category_id);
+                }
+            }
+        }
+    });
+
+    $.ajax({
+        url: "/Post/LoadProvince",
+        type: "POST",
+        dataType: "json",
+        success: function (response) {
+            if (response.status == true) {
+                var html = '<option value="">Choose Province</option>"';
+                var data = response.data;
+                $.each(data, function (i, val) {
+                    html += '<option value="' + val.Id + '">' + val.Name + '</option>"'
+                });
+                $('#ProvinceID').html(html);
+                if (province != 0) {
+                    $('#ProvinceID').val(province);
+                }
+            }
+        }
+    });
+
+    if (category_id != 0) {
+        $.ajax({
+            url: '/Post/Second_Cate',
+            type: "POST",
+            dataType: "json",
+            data: { id: category_id },
+            success: function (response) {
+                if (response.status == true) {
+                    var html = '<option value="">Choose Category</option>"';
+                    var data = response.data;
+                    if (data == 0) {
+                        $('#Second-Category-div').css("display", "none");
+                    }
+                    else {
+                        $('#Second-Category-div').css("display", "block");
+                        $.each(data, function (i, val) {
+                            html += '<option value="' + val.seccond_cate_id + '">' + val.seccond_cate + '</option>"'
+                        });
+                        $('#Second_CategoryID').html(html);
+                        if (second_cate_id != 0) {
+                            $('#Second_CategoryID').val(second_cate_id);
+                        }
+                    }
+
+                }
+            }
+        })
+    }
+
+
+    if (second_cate_id != 0) {
+        $.ajax({
+        url: "/Post/Third_Cate",
+            type: "POST",
+            dataType: "json",
+            data: { id: second_cate_id },
+            success: function(response) {
+                if (response.status == true)
+                {
+                    var html = '<option value="">Choose Category</option>"';
+                    var data = response.data;
+                    if (data == 0)
+                    {
+                        $('#Third-Category-div').css("display", "none");
+                    }
+                    else
+                    {
+                        $('#Third-Category-div').css("display", "block");
+                        $.each(data, function(i, val) {
+                            html += '<option value="' + val.third_cate_id + '">' + val.third_cate + '</option>"'
+                        });
+                        $('#Third_CategoryID').html(html);
+                        if (third_cate_id != 0) {
+                            $('#Third_CategoryID').val(third_cate_id);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    if (province != 0) {
+        $.ajax({
+            url: "/Post/LoadDistrict",
+            type: "POST",
+            dataType: "json",
+            data: { id: province },
+            success: function (response) {
+                if (response.status == true) {
+                    var html = '<option value="">Choose District</option>"';
+                    var data = response.data;
+                    if (data == 0) {
+                        $('#District-div').css("display", "none");
+                    }
+                    else {
+                        $('#District-div').css("display", "block");
+                        $.each(data, function (i, val) {
+                            html += '<option value="' + val.Id + '">' + val.Name + '</option>"'
+                        });
+                        $('#DistrictID').html(html);
+                        if (district != 0) {
+                            $('#DistrictID').val(district);
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    if (district != 0) {
+        $.ajax({
+            url: "/Post/LoadWard",
+            type: "POST",
+            dataType: "json",
+            data: { id: district },
+            success: function (response) {
+                if (response.status == true) {
+                    var html = '<option value="">Choose Ward</option>"';
+                    var data = response.data;
+                    if (data == 0) {
+                        $('#Ward-div').css("display", "none");
+                    }
+                    else {
+                        $('#Ward-div').css("display", "block");
+                        $.each(data, function (i, val) {
+                            html += '<option value="' + val.Id + '">' + val.Name + '</option>"'
+                        });
+                        $('#WardID').html(html);
+                        if (ward != 0) {
+                            $('#WardID').val(ward);
+                        }
+                    }
+
+                }
+            }
+        })
+    }
+
+    var html = '<option value="">Order By</option>"';
+    html += '<option value="1"> Giá tăng dần </option>"'
+    html += '<option value="2"> Giá giảm dần </option>"'
+    html += '<option value="3"> Ngày đăng mới nhất </option>"'
+    html += '<option value="4"> Ngày đăng cũ nhất </option>"'
+    $('#OrderID').html(html);
+    if (sortOrder != 0) {
+        $('#OrderID').val(sortOrder);
+    }
+    $("#CategoryID").change(function () {
+        category_id = $('#CategoryID').val();
+        second_cate_id = 0;
+        third_cate_id = 0;
+        province = $('#ProvinceID').val();
+        district = $('#DistrictID').val();
+        ward = $('#WardID').val();
+        sortOrder = $('#OrderID').val();
+
+        window.location.href = url + "/Home/Category_Post?category_id=" + category_id + "&second_cate_id=" + second_cate_id + "&third_cate_id=" + third_cate_id + "&province=" + province + "&district=" + district + "&ward=" + ward + "&sortOrder=" + sortOrder + "&search=" + search;
+    });
+
+    $("#Second_CategoryID").change(function () {
+        category_id = $('#CategoryID').val();
+        second_cate_id = $('#Second_CategoryID').val();
+        third_cate_id = 0;
+        province = $('#ProvinceID').val();
+        district = $('#DistrictID').val();
+        ward = $('#WardID').val();
+        sortOrder = $('#OrderID').val();
+
+        window.location.href = url + "/Home/Category_Post?category_id=" + category_id + "&second_cate_id=" + second_cate_id + "&third_cate_id=" + third_cate_id + "&province=" + province + "&district=" + district + "&ward=" + ward + "&sortOrder=" + sortOrder + "&search=" + search;
+    });
+    $("#Third_CategoryID").change(function () {
+        category_id = $('#CategoryID').val();
+        second_cate_id = $('#Second_CategoryID').val();
+        third_cate_id = $('#Third_CategoryID').val();
+        province = $('#ProvinceID').val();
+        district = $('#DistrictID').val();
+        ward = $('#WardID').val();
+        sortOrder = $('#OrderID').val();
+
+        window.location.href = url + "/Home/Category_Post?category_id=" + category_id + "&second_cate_id=" + second_cate_id + "&third_cate_id=" + third_cate_id + "&province=" + province + "&district=" + district + "&ward=" + ward + "&sortOrder=" + sortOrder + "&search=" + search;
+    });
+    $("#ProvinceID").change(function () {
+        category_id = $('#CategoryID').val();
+        second_cate_id = $('#Second_CategoryID').val();
+        third_cate_id = $('#Third_CategoryID').val();
+        province = $('#ProvinceID').val();
+        district = 0;
+        ward = 0;
+        sortOrder = $('#OrderID').val();
+
+        window.location.href = url + "/Home/Category_Post?category_id=" + category_id + "&second_cate_id=" + second_cate_id + "&third_cate_id=" + third_cate_id + "&province=" + province + "&district=" + district + "&ward=" + ward + "&sortOrder=" + sortOrder + "&search=" + search;
+    });
+    $("#DistrictID").change(function () {
+        category_id = $('#CategoryID').val();
+        second_cate_id = $('#Second_CategoryID').val();
+        third_cate_id = $('#Third_CategoryID').val();
+        province = $('#ProvinceID').val();
+        district = $('#DistrictID').val();
+        ward = 0;
+        sortOrder = $('#OrderID').val();
+
+        window.location.href = url + "/Home/Category_Post?category_id=" + category_id + "&second_cate_id=" + second_cate_id + "&third_cate_id=" + third_cate_id + "&province=" + province + "&district=" + district + "&ward=" + ward + "&sortOrder=" + sortOrder + "&search=" + search;
+    });
+    $("#WardID").change(function () {
+        category_id = $('#CategoryID').val();
+        second_cate_id = $('#Second_CategoryID').val();
+        third_cate_id = $('#Third_CategoryID').val();
+        province = $('#ProvinceID').val();
+        district = $('#DistrictID').val();
+        ward = $('#WardID').val();
+        sortOrder = $('#OrderID').val();
+
+        window.location.href = url + "/Home/Category_Post?category_id=" + category_id + "&second_cate_id=" + second_cate_id + "&third_cate_id=" + third_cate_id + "&province=" + province + "&district=" + district + "&ward=" + ward + "&sortOrder=" + sortOrder + "&search=" + search;
+    });
+    $("#OrderID").change(function () {
+        category_id = $('#CategoryID').val();
+        second_cate_id = $('#Second_CategoryID').val();
+        third_cate_id = $('#Third_CategoryID').val();
+        province = $('#ProvinceID').val();
+        district = $('#DistrictID').val();
+        ward = $('#WardID').val();
+        sortOrder = $('#OrderID').val();
+
+        window.location.href = url + "/Home/Category_Post?category_id=" + category_id + "&second_cate_id=" + second_cate_id + "&third_cate_id=" + third_cate_id + "&province=" + province + "&district=" + district + "&ward=" + ward + "&sortOrder=" + sortOrder + "&search=" + search;
+    });
+</script>

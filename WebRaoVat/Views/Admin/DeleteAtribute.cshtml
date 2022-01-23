@@ -1,0 +1,22 @@
+﻿@model WebRaoVat.Models.Atribute
+
+@{
+    ViewBag.Title = "Delete Atribute";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div>
+    <div class="col-6" style="text-align: center; padding: 15px; font-size: 18pt;">
+        <h2 class="title-page">Delete Atribute: <br /> @Model.atribute_name?</h2>
+        <div>
+            @Html.DisplayFor(model => model.Category.category1)
+        </div>
+        <br />
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <a href="@Url.Action("ManageAtribute","Admin")" class="admin-btn-no">&#8678 Manage page</a>
+            <input type="submit" value="Delete!" class="admin-btn" style="float:none;" />
+        }
+    </div>
+</div>

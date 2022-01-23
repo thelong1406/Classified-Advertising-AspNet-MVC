@@ -1,0 +1,28 @@
+﻿@model IEnumerable<WebRaoVat.Models.Dealed>
+@using WebRaoVat.Models;
+@{LoaPhatThanhEntities db = new LoaPhatThanhEntities();}
+<link href="~/Content/long_trinh.css" rel="stylesheet" />
+<div class="container deal-deli">
+    @foreach (var item in Model)
+    {
+        Product product = db.Products.AsNoTracking().Where(m => m.product_id == item.Post.product_id).FirstOrDefault();
+        var brand = product.BrandSelect.Brand.brand1;
+        var name = product.product1;
+        <div class="row deal-item">
+            <div class="col-md-3">
+                <img src="@item.Post.User.image" class="deal-image" onclick="document.location.href = '@Url.Action("ViewUser","User", new { id = item.Post.user_id })'" />
+            </div>
+            <div class="col-md-7 follow-noti" onclick="document.location.href = '@Url.Action("PostDetail","Post", new { id = item.post_id })'">
+                <h4 class="noti-title">Product: @brand @name</h4>
+                <p class="noti-price">Price: @item.Post.price</p>
+                <p class="noti-content">@item.Post.user_id reply at: @item.deal_date.ToLongDateString() at @item.deal_date.ToShortTimeString() </p>
+                <p class="noti-content">Delivering from: @item.Post.Ward.Type @item.Post.Ward.Name - @item.Post.Ward.District.Type @item.Post.Ward.District.Name - @item.Post.Ward.District.Province.Type @item.Post.Ward.District.Province.Name</p>
+            </div>
+            <div class="col-md-2">
+                <div class="theme-btn done-deal" onclick="document.location.href = '@Url.Action("DealDone","Deal", new { _id = item.deal_id })'">Received &#10003;</div>
+            </div>
+        </div>
+    }
+</div>
+
+

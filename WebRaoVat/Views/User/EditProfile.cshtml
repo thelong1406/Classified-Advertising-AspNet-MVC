@@ -1,0 +1,71 @@
+﻿
+@model WebRaoVat.Models.User
+
+@{
+    ViewBag.Title = "Edit Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <script src="~/Scripts/GetImageToTagImg.js"></script>
+</head>
+
+@using (Html.BeginForm("EditProfile", "User", FormMethod.Post, new { @id = (string)@Session["User_ID"], enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="form-login bg-theme box-shadow col-md-6">
+            <h4 class="font-aqua font-18 title-form">Change profile</h4>
+            @Html.ValidationSummary(true, "", new { @class = "validation" })
+
+            <div class="row">
+
+                @Html.HiddenFor(model => model.user_id, new { htmlAttributes = new { @class = "form-control" } })
+
+                @Html.HiddenFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+
+                <div class="col-6">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <p class="control-label" style="font-weight: bold">Phone number</p>
+                        </div>
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.phone, "", new { @class = "validation" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <p class="control-label col-12">Confirm your password</p>
+                        <div class="col-md-12">
+                            <input class="form-control" placeholder="To make sure who you are!" type="password" name="ConfirmPass" id="ConfirmPass" />
+                            <p class="text-danger">@ViewBag.ConfirmPassWrong</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <div class="control-label col-md-2">Avartar</div>
+                        <div class="col-md-12">
+                            <img src="@Model.image" height="150" width="150" id="previewImg" />
+                            <input type="file" name="UploadImage" id="UploadImage" onchange="ChangeImage(this, document.getElementById('previewImg'))" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <input type="submit" value="Save" class="border-button btn-bgwhite" style="margin-left: auto; width: 100%;" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

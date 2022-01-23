@@ -1,0 +1,78 @@
+﻿@using WebRaoVat.Models
+@model Cate_Post
+@{
+    ViewBag.Title = "Loa Phát Thanh";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    User user = (User)Session["User"];
+}
+@helper Truncate(string input, int length)
+{
+    if (input.Length < length)
+    {
+        @input
+    }
+    else
+    {
+        @input.Substring(0, length)<text>...</text>
+    }
+}
+<style>
+    .product-grid {
+        padding-bottom: 20px;
+        padding-top: 20px;
+    }
+
+        .product-grid:hover {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+    a:hover {
+        text-decoration: none
+    }
+</style>
+
+<div class="container">
+    <h5>Category</h5>
+
+    <div class="row">
+        @foreach (var item in Model.Categories)
+        {
+            <div class="col-sm-12 col-sm-6 col-md-2 col-lg-2 card-cate" style="margin:10px 15px 10px 15px;">
+                <a href="@Url.Action("Category_Post","Home",new { @category_id = item.category_id })" class="link-no-decor">
+                    <img src="@Url.Content(item.image)" height="150" width="150" style="object-fit: contain; object-position: center;" />
+                    <p style="font-weight:normal;margin-top:5px;">@Html.DisplayFor(model => item.category1)</p>
+                </a>
+            </div>
+        }
+    </div>
+    <h5>New Posts</h5>
+    <div class="row border-xanhnhat">
+        @foreach (var item in Model.Posts)
+        {
+            if (user == null)
+            {
+                <div class="col-md-2 product-grid card-post card" style="margin:5px 15px 5px 15px;padding-top:10px;padding-bottom:10px;">
+                    <a href="@Url.Action("PostDetail","Post", new { @id = item.post_id,@userId=""})" class="link-no-decor">
+                        <img src="@Url.Content(item.hinh)" width="150" height="150" style="object-fit: contain; object-position: center;" />
+                        <p style="font-size:14px;margin-bottom:0px;">@Truncate(item.title, 38)</p>
+                        <p style="color:red;margin-bottom:0px;">@Html.DisplayFor(model => item.price)</p>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-2 product-grid card-post card" style="margin:5px 15px 5px 15px;padding-top:10px;padding-bottom:10px;">
+                    <a href="@Url.Action("PostDetail","Post", new { @id = item.post_id,@userId=user.user_id})" class="link-no-decor">
+                        <img src="@Url.Content(item.hinh)" width="150" height="150">
+                        <p style="font-size:14px;margin-bottom:0px;">@Truncate(item.title, 38)</p>
+                        <p style="color:red;margin-bottom:0px;">@Html.DisplayFor(model => item.price)</p>
+                    </a>
+                </div>
+            }
+
+        }
+    </div>
+</div>

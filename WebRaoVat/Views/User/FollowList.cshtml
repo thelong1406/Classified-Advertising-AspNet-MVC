@@ -1,0 +1,75 @@
+﻿@using WebRaoVat.Models;
+@model IEnumerable<WebRaoVat.Models.Follow>
+@{
+    var dem = 0;
+    User _user = (User)Session["User"];
+    LoaPhatThanhEntities db = new LoaPhatThanhEntities();
+    var follow = Model.Where(m => m.user_id == _user.user_id).ToList();
+    var follower = Model.Where(m => m.follower == _user.user_id).ToList();
+}
+<link href="~/Content/long_trinh.css" rel="stylesheet" />
+<div class="container border-xanhnhat col-md-6"  style="overflow: auto;">
+    <p class="font-18 font-inter" style="color: #203562" >Following</p>
+    <hr />
+    @foreach (var item in follow)
+    {
+        if (dem % 4 == 0)
+        {
+            @Html.Raw("<div class=\"row\" >")
+        }
+        <div class="col-md-3">
+            <div class="user-item " onclick="document.location.href = '@Url.Action("ViewUser", "User", new { @id = @item.User.user_id })'">
+                <img src="@item.User.image" class="ava-follow" />
+                <p>@Html.DisplayFor(modelItem => item.User.user_id)</p>
+                <a href="/User/UnfollowUser/@item.User.user_id" class="text-theme btn-follow">unfollow</a>
+            </div>
+        </div>
+        dem++;
+        if (dem == follow.Count())
+        {
+            @Html.Raw("</div>")
+        }
+        else if (dem % 4 == 0)
+        {
+            @Html.Raw("</div>")
+        }
+
+
+    }
+</div>
+@{dem = 0; }
+<div class="container border-xanhnhat col-md-6" style="overflow: auto;">
+    <p class="font-18 font-inter" style="color: #203562">Follower</p>
+    <hr />
+    @foreach (var item in follower)
+    {
+
+            if (dem % 4 == 0)
+            {
+                @Html.Raw("<div class=\"row\" >")
+            }
+            <div class="col-md-3">
+                <div class="user-item " onclick="document.location.href = '@Url.Action("ViewUser", "User", new { @id = @item.User1.user_id})'">
+                    <img src="@item.User1.image" class="ava-follow" />
+                    <p>@Html.DisplayFor(modelItem => item.User1.user_id)</p>
+                    @if (db.Follows.Where(u => u.user_id == item.user_id && u.follower == _user.user_id).FirstOrDefault() == null)
+                    {
+                        <a href="/User/followUser/@item.User1.user_id" class="text-theme btn-follow">follow</a>
+                    }
+                    else
+                    {
+                        <a href="/User/UnfollowUser/@item.User1.user_id" class="text-theme btn-follow">unfollow</a>
+                    }
+                </div>
+            </div>
+            dem++;
+            if (dem == follower.Count())
+            {
+                    @Html.Raw("</div>")
+            }
+            else if (dem % 4 == 0)
+            {
+                    @Html.Raw("</div>")
+            }
+    }
+</div>

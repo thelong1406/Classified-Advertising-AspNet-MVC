@@ -1,0 +1,46 @@
+﻿@model WebRaoVat.Models.Brand
+
+@{
+    ViewBag.Title = "Create Brand";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<script src="~/Scripts/GetImageToTagImg.js"></script>
+<h2 class="title-page">Create Brand</h2>
+
+@using (Html.BeginForm("CreateBrand", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model=>model.brand_id)
+
+        <div class="form-group">
+            <p class="control-label col-md-10">Brand's name</p>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.brand1, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.brand1, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <p class="control-label col-12">Brands' Logo</p>
+            <div class="col-md-10">
+                <img src="@Url.Content(Model.logo)" height="100" width="100" id="previewImg" />
+                <input type="file" name="Logo" id="Logo" onchange="ChangeImage(this, document.getElementById('previewImg'))" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <a href="@Url.Action("ManageBrands","Admin")" class="admin-btn-no">&#8678 Manage page</a>
+                <input type="submit" value="Create" class="admin-btn" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,58 @@
+﻿@using WebRaoVat.Models;
+@model FollowList
+@{
+    var dem = 0;
+}
+<link href="~/Content/long_trinh.css" rel="stylesheet" />
+<div class="container border-xanhnhat col-md-6">
+    <p class="font-18 font-inter" style="color: #203562">Following</p>
+
+    @foreach (var item in Model.Follow)
+    {
+        if (dem % 4 == 0)
+        {
+            @Html.Raw("<div class=\"row\" >")
+        }
+        <div class="col-md-3">
+            <div class="user-item " onclick="document.location.href = '@Url.Action("ViewUser", "User", new { @id = @item.user_id})'">
+                <img src="@item.image" class="ava-follow" />
+                <p>@Html.DisplayFor(modelItem => item.user_id)</p>
+            </div>
+        </div>
+        dem++;
+        if (dem == Model.Follow.Count())
+        {
+            @Html.Raw("</div>")
+        }
+        if (dem % 4 == 0)
+        {
+            @Html.Raw("</div>")
+        }
+    }
+</div>
+<div class="container border-xanhnhat col-md-6">
+    <p class="font-18 font-inter" style="color: #203562">Follower</p>
+
+    @foreach (var item in Model.Follower)
+    {
+        if (dem % 4 == 0)
+        {
+            @Html.Raw("<div class=\"row\" >")
+        }
+        <div class="col-md-3">
+            <div class="user-item " onclick="document.location.href = '@Url.Action("ViewUser", "User", new { @id = @item.user_id})'">
+                <img src="@item.image" class="ava-follow" />
+                <p>@Html.DisplayFor(modelItem => item.user_id)</p>
+            </div>
+        </div>
+        dem++;
+        if (dem == Model.Follower.Count())
+        {
+            @Html.Raw("</div>")
+        }
+        if (dem % 4 == 0)
+        {
+            @Html.Raw("</div>")
+        }
+    }
+</div>

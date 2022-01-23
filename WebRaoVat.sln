@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebRaoVat", "WebRaoVat\WebRaoVat.csproj", "{94FD699B-8E32-446B-91E3-088BE1871D36}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{94FD699B-8E32-446B-91E3-088BE1871D36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94FD699B-8E32-446B-91E3-088BE1871D36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94FD699B-8E32-446B-91E3-088BE1871D36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94FD699B-8E32-446B-91E3-088BE1871D36}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B7B37396-4A7B-4CE4-A597-B44DDA4E69DC}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,68 @@
+﻿@using WebRaoVat.Models
+@using PagedList.Mvc;
+@model PagedList.PagedList<WebRaoVat.Models.Post>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<link href="~/Content/long_trinh.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Category_Post";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .border-item:hover {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+</style>
+@{
+    User currentUser = (User)Session["User"];
+    var save = new List<Favorite>();
+}
+@if (currentUser != null)
+{
+    save = (List<Favorite>)ViewData["Save"];
+}
+@{
+    var cate_id = (int)ViewData["cate_id"];
+    var second_cateid = (int)ViewData["second_cate_id"];
+    var third_cateid = (int)ViewData["third_cate_id"];
+    var province = (int)ViewData["provinceid"];
+    var district = (int)ViewData["districtid"];
+    var ward = (int)ViewData["wardid"];
+    var sortOrder = (int)ViewData["sortOrder"];
+    var search = (string)ViewData["search"];
+}
+
+<div class="container">
+
+    <h5>Filter</h5>
+    <div class="row border-xanhnhat" style="display:block">
+        @{Html.RenderAction("Filter", "Home", new { @category_id = cate_id, @second_cate_id = second_cateid, @third_cate_id = third_cateid, @province = province, @district = district, @ward = ward, @sortOrder = sortOrder, @search = search });}
+    </div>
+
+
+    <h5>Post</h5>
+    <div class="row border-xanhnhat">
+        @foreach (var item in Model)
+        {
+            <div class="row border-item" style="margin-bottom: 1vw; margin-right:0px;margin-left:0px; cursor: pointer; user-select: none;" onclick="document.location.href = '@Url.Action("PostDetail", "Post", new { @id = item.post_id })'">
+                <div class="col-md-2" style="padding:10px">
+                    <img src="@Url.Content(item.hinh)" width="150" height="150" />
+                </div>
+                <div class="col-md-8">
+                    <div class="row" style="font-size:30px">@Html.DisplayFor(model => item.title)</div>
+                    <div class="row">@Html.DisplayFor(model => item.SeccondCategory.seccond_cate)</div>
+                    <div class="row" style="color:red;"><span style="color:black">Price: </span> $@Html.DisplayFor(model => item.price)</div>
+                    <div class="row"><span style="color:black">Date Post: </span> @Html.DisplayFor(model => item.date_posted)</div>
+                    <div class="row"><span style="color:black">Location: </span> @Html.DisplayFor(model => item.Ward.Type) @Html.DisplayFor(model => item.Ward.Name) - @Html.DisplayFor(model => item.Ward.District.Type) @Html.DisplayFor(model => item.Ward.District.Name) - @Html.DisplayFor(model => item.Ward.District.Province.Type) @Html.DisplayFor(model => item.Ward.District.Province.Name)</div>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+<div class="page" style="display: inline;">
+    Page: @(Model.PageCount<Model.PageNumber?0:Model.PageNumber)/@Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Category_Post", new { category_id = @cate_id, page, second_cate_id = @second_cateid, third_cate_id = @third_cateid, province = @province, sortOrder = @sortOrder }))
+</div>
